@@ -29,9 +29,9 @@ Requirements
 Resources
 ------------
 
-[g-codes implemented](https://www.google.com)
+[g-codes implemented](https://raw.githubusercontent.com/beeverycreative/beeconnect/develop/beetf/gcode.md)
 
 License
 -------
 
-MIT licensed. See the bundled `LICENSE <https://raw.githubusercontent.com/beeverycreative/beeconnect/develop/beetf/gcode.md>`_ file for more details.
+MIT licensed. See the bundled `LICENSE <https://github.com/rui-teixeira/beetf/blob/master/LICENSE>`_ file for more details.
