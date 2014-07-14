@@ -1,10 +1,7 @@
 
 ===============================
-BEECONNECT
+BEECONNECT by ![alt text](https://www.beeverycreative.com/client/skins/images/logo.png "Logo Title Text 1")
 ===============================
-
-
-![alt text](https://www.beeverycreative.com/client/skins/images/logo.png "Logo Title Text 1")
 
 
 beetf.py
