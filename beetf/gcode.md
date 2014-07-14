@@ -1,4 +1,4 @@
-B/F |Comm | Arguments | Description |
+| B/F |Comm | Arguments | Description |
 | - | --- | --------- | ----------- |
 | F | G0 | [X<VAL>] [Y<VAL>] [Z<VAL>] [F<VAL>] | synchronized movement |
 | F | G1 | [X<VAL>] [Y<VAL>] [Z<VAL>] [F<VAL>] [E<VAL>] | synchronized movement |
