@@ -3,9 +3,8 @@
 BEECONNECT
 ===============================
 
-.. image:: https://www.beeverycreative.com/client/skins/images/logo.png
-    :target: https://www.beeverycreative.com/client/skins/images/logo.png
 
+![alt text](https://www.beeverycreative.com/client/skins/images/logo.png "Logo Title Text 1")
 
 
 beetf.py
