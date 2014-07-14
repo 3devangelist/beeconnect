@@ -12,7 +12,7 @@ A Script to facilitate driver-like access to the the BEETHEFIRST 3d printer usin
 
 * TODO
 
-Octobeet
+Octobee
 -------- 
 Octoprint compatibility using PyUsb to launch the BEETF in serial com-mode
 
