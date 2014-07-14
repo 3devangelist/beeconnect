@@ -34,4 +34,4 @@ Resources
 License
 -------
 
-MIT licensed. See the bundled `LICENSE <https://github.com/rui-teixeira/beetf/blob/master/LICENSE>`_ file for more details.
+MIT licensed. See the bundled `LICENSE <https://raw.githubusercontent.com/beeverycreative/beeconnect/develop/beetf/gcode.md>`_ file for more details.
