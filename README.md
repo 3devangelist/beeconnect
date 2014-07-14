@@ -25,6 +25,12 @@ Requirements
 - PyUsb 1.0
 - Python >= 2.7or >= 3.3
 
+
+Resources
+------------
+
+[g-codes implemented](https://www.google.com)
+
 License
 -------
 
