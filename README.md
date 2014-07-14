@@ -29,7 +29,7 @@ Requirements
 Resources
 ------------
 
-[g-codes implemented](https://raw.githubusercontent.com/beeverycreative/beeconnect/develop/beetf/gcode.md)
+[g-codes implemented](https://github.com/beeverycreative/beeconnect/blob/develop/beetf/gcode.md)
 
 License
 -------
