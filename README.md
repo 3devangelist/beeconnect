@@ -2,9 +2,9 @@
 
 BEECONNECT by ![alt text](https://www.beeverycreative.com/client/skins/images/logo.png "Logo Title Text 1")
 ===============================
+[Criar texto introdutorio]
 
-
-beetf.py
+Project beetf.py
 --------
 A Script to facilitate driver-like access to the the BEETHEFIRST 3d printer using PyUsb and PySerial.
 
@@ -12,7 +12,7 @@ A Script to facilitate driver-like access to the the BEETHEFIRST 3d printer usin
 
 * TODO
 
-Octobee
+Project Octobee
 -------- 
 Octoprint compatibility using PyUsb to launch the BEETF in serial com-mode
 
@@ -29,7 +29,7 @@ Requirements
 Resources
 ------------
 
-[g-codes implemented](https://www.google.com)
+[g-codes implemented](https://github.com/beeverycreative/beeconnect/blob/develop/beetf/gcode.md)
 
 License
 -------
