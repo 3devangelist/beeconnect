@@ -1,7 +1,7 @@
 BEECONNECT by ![www.beeverycreative.com](https://www.beeverycreative.com/client/skins/images/logo.png "Logo Title Text 1")
 ===============================
 
-The BEETHEFIRST 3D printer was built around the [r2c2](http://www.3dprinting-r2c2.com/) electronic board and is a RepRap printer at heart.
+The BEETHEFIRST 3D printer was built around the [R2C2](http://www.3dprinting-r2c2.com/) electronic board and is a RepRap printer at heart.
 However we are using a usb communication protocol that makes it hard to use with most 3d printing software.
 
 Our goals are:
