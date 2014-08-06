@@ -2,13 +2,13 @@ BEECONNECT by ![www.beeverycreative.com](https://www.beeverycreative.com/client/
 ===============================
 
 The BEETHEFIRST 3D printer was built around the [R2C2](http://www.3dprinting-r2c2.com/) electronic board and is a RepRap printer at heart.
-However we are using a usb communication protocol that makes it hard to use with most 3d printing software.
+However we are using a usb communication protocol that makes it hard to use with most 3D printing software.
 
 Our goals are:
-* To make the BEETF more compatible overall and allowing users to enjoy their favourite 3d printing software or customize their slicer settings;
+* To make the BEETF more compatible overall and allowing users to enjoy their favourite 3D printing software or customize their slicer settings;
 * To ensure compatibility for the best 3D printing projects;
 * To develop a steping stone for open-source colaboration.
-* Also to develop wifi/lan connectivity for the BEETHEFIRST 3d print;
+* Also to develop Wi-Fi/LAN connectivity for the BEETHEFIRST 3D print;
 
 The first of the projects that we will ensure 100% compatibility is the [Octoprint](http://octoprint.org/) an amazing responsive web interface for controlling your 3D printer that runs on the [Raspberry Pi](http://www.raspberrypi.org/). 
 
@@ -17,7 +17,7 @@ Version History
 ===============
 
 * BECONNECT v0.1 (this is where we are right now)
-  * BEETF Communication api using [pyUSB](https://github.com/walac/pyusb/)
+  * BEETF Communication API using [pyUSB](https://github.com/walac/pyusb/)
   * USB command line interface into the BEETF
   * linux-driver and intructions; 
   * Octoprint compatibility using PyUsb to launch the BEETF in serial COM mode.
@@ -33,7 +33,7 @@ Version History
 Setup on RPI from scratch
 =========================
 We found that the easiest way to setup Octprint on your Raspberry Pi is to use [OctoPi](https://github.com/guysoft/OctoPi) 
-> A Raspberry Pi distribution for 3d printers. It includes the OctoPrint host software for 3d printers out of the box and mjpg-streamer with rapicam support for live viewing of prints and timelapse video creation.
+> A Raspberry Pi distribution for 3D printers. It includes the OctoPrint host software for 3D printers out of the box and mjpg-streamer with rapicam support for live viewing of prints and timelapse video creation.
 
 OctoPi for the BEETF can easily be installed by downloading our pre-configured [image](ftp://beeverycreative.com) and following the steps described in [OctoPi](https://github.com/guysoft/OctoPi) 
 
