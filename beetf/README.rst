@@ -12,7 +12,7 @@ beetf
         :target: https://crate.io/packages/beetf?version=latest
 
 
-A Script to facilitate driver-like access to the the BEETHEFIRST 3d printer using PyUsb and PySerial.
+A Script to facilitate driver-like access to the the BEETHEFIRST 3D printer using PyUsb and PySerial.
 
 Features
 --------
