@@ -63,10 +63,15 @@ Requirements
 - Python >= 2.7or >= 3.3
 
 
-Resources
+Documentation
 ------------
 
 [g-codes implemented](https://github.com/beeverycreative/beeconnect/blob/develop/beetf/gcode.md)
+
+
+Resources
+------------
+git ignore rules from (https://github.com/github/gitignore) under [MIT](https://github.com/github/gitignore/blob/master/LICENSE)
 
 License
 -------
