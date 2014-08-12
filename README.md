@@ -1,8 +1,7 @@
 BEECONNECT by ![www.beeverycreative.com](https://www.beeverycreative.com/client/skins/images/logo.png "Logo Title Text 1")
 ===============================
 
-The BEETHEFIRST 3D printer was built around the [R2C2](http://www.3dprinting-r2c2.com/) electronic board and is a RepRap printer at heart.
-However we are using a usb communication protocol that makes it hard to use with most 3D printing software.
+The BEETHEFIRST 3D printer was built around the [R2C2](http://www.3dprinting-r2c2.com/) electronic board and is a RepRap printer at heart (however we are using a custom usb communication protocol).
 
 Our goals are:
 * To make the BEETF more compatible overall and allowing users to enjoy their favourite 3D printing software or customize their slicer settings;
@@ -11,6 +10,8 @@ Our goals are:
 * Also to develop Wi-Fi/LAN connectivity for the BEETHEFIRST 3D print;
 
 The first of the projects that we will ensure 100% compatibility is the [Octoprint](http://octoprint.org/) an amazing responsive web interface for controlling your 3D printer that runs on the [Raspberry Pi](http://www.raspberrypi.org/). 
+
+You can follow and contact us for development on [BEECONNECT Google Groups page](http://www.3dprinting-r2c2.com/).
 
 
 Version History
