@@ -11,7 +11,7 @@ Our goals are:
 
 The first of the projects that we will ensure 100% compatibility is the [Octoprint](http://octoprint.org/) an amazing responsive web interface for controlling your 3D printer that runs on the [Raspberry Pi](http://www.raspberrypi.org/). 
 
-You can follow and contact us for development on [BEECONNECT Google Groups page](http://www.3dprinting-r2c2.com/).
+You can follow and contact us for development on [BEECONNECT Google Groups page](https://groups.google.com/forum/#!forum/beeconnect).
 
 
 Version History
