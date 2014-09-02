@@ -31,6 +31,12 @@ Version History
   * we are not sure, what lies ahead ;)
 
 
+Install image
+=============
+Following this steps you can install a prepared image of BEECONNECT. 
+Download the image [here](https://www.beeverycreative.com/public/software/software/beeconnect_v01.dmg.zip).
+[Follow this steps](https://github.com/raspberrypi/documentation/blob/master/installation/installing-images/README.md). Jump to "Writing an image to the SD card"
+
 Setup on RPI from scratch
 =========================
 We found that the easiest way to setup Octprint on your Raspberry Pi is to use [OctoPi](https://github.com/guysoft/OctoPi) 
@@ -57,7 +63,7 @@ BEECONNECT tools can be installed by cloning this repository and installing them
 
 
 
-Requirements
+Dependencies
 ------------
 
 - PyUsb 1.0
