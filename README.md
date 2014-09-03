@@ -73,8 +73,8 @@ Dependencies
 Documentation
 ------------
 
-[g-codes implemented](https://github.com/beeverycreative/beeconnect/blob/develop/beetf/gcode.md)
-
+- [g-codes implemented](https://github.com/beeverycreative/beeconnect/blob/develop/beetf/gcode.md)
+- [CURA setup for BEETHEFIRST.pdf](https://github.com/beeverycreative/beeconnect/blob/develop/documentation/CURA%20setup%20for%20BEETHEFIRST.pdf)
 
 Resources
 ------------
