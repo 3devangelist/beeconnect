@@ -35,6 +35,7 @@ Install image
 =============
 Follow [this steps](https://github.com/raspberrypi/documentation/blob/master/installation/installing-images/README.md)"Writing an image to the SD card") to install a prepared image of BEECONNECT. 
 Download the images from here: [beeconnect_v01.dmg.zip](https://www.beeverycreative.com/public/software/software/beeconnect_v01.dmg.zip); [beeconnect_v01.iso.zip](https://www.beeverycreative.com/public/software/software/beeconnect_v01.iso.zip).
+You will need a 8GB SD card. 
 
 
 Setup on RPI from scratch
