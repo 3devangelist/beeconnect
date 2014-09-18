@@ -1,2 +1,2 @@
-ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="ffff", ATTRS{idProduct}=="014e", MODE="660", GROUP=="plugdev", RUN+="sh /home/pi/beeconnect/beetf/launch_beeconnect.sh"
-ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="29c9", ATTRS{idProduct}=="0001", MODE="660", GROUP=="plugdev", RUN+="sh /home/pi/beeconnect/beetf/launch_beeconnect.sh"
+ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="ffff", ATTRS{idProduct}=="014e", MODE="660", GROUP=="plugdev", RUN+="sh /home/pi/beeconnect/beetf/firmware/launch_beeconnect.sh"
+ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="29c9", ATTRS{idProduct}=="0001", MODE="660", GROUP=="plugdev", RUN+="sh /home/pi/beeconnect/beetf/firmware/launch_beeconnect.sh"
