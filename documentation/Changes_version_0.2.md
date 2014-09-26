@@ -35,4 +35,5 @@ This tells the printer to allow movement of the extruder motor, when the hotend 
 
 Example:
 > M302 S'<minimun_temperature>' 
+
 > M302 (assume S0)
