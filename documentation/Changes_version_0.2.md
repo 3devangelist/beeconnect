@@ -33,4 +33,6 @@ All coordinates from now on are relative to the last position.
 
 This tells the printer to allow movement of the extruder motor, when the hotend is not at printing temperature  
 
-Example: M302 S<minimun_temperature>
+Example:
+> M302 S'<minimun_temperature>' 
+> M302 (assume S0)
