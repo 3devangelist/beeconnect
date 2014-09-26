@@ -1,4 +1,4 @@
-The page documents the changes to be implemented in firmware BEECONNECT_0.1 the new firmware will be BEECONNECT_0.2 
+Changes to be implemented in firmware: BEECONNECT_0.2 
 
  
 ##### M105: Get Extruder Temperature  
