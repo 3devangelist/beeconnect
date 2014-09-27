@@ -7,7 +7,7 @@ BEECONNECT_0.1:
 > T:11.0000 B:0.0000 ok Q:0 
 
 BEECONNECT_0.2: 
-> ok T:<current> /<target>  B:<-237.0>  Q:0 
+> `ok T:<current> /<target>  B:<-237.0>  Q:0` 
 
 Utilmaker,marlin, etc:  
 > ok T:29.0 /29.0 B:29.5 /29.0 @:0
