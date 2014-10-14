@@ -1,4 +1,25 @@
-Changes to be implemented in firmware: BEECONNECT_0.2 
+
+
+---
+### beeconnect_0.3.bin
+
+##### start.gcode:
+  > //PID config  
+  > +M130 T6 U1.3 V80
+
+#### M109:
+  > +prints temperature every 20s
+
+#### m114:
+  > +bugfix - get current positions as assigned to another mcode:  
+  >  now: ok C: X:9.15 Y:9.15 Z:1.00 E:136.84
+
+#### m105:
+  > +bugfix - endline missing:  
+  >  now: ok T:219.82 /220.00 B:-237.00 /-237.00
+
+---
+#### BEECONNECT_0.2.bin
 
  
 ##### M105: Get Extruder Temperature  
