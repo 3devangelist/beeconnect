@@ -1,0 +1,39 @@
+{
+    "Settings":[
+        {
+            "Labels":[
+                {
+                    "Text":"Settings",
+                    "X":"0.34375",
+                    "Y":"0.02",
+                    "FontType":"Bold",
+                    "FontSize":"0.05",
+                    "FontColor":"0,0,0"
+                },
+                {
+                    "Text":"Insert wifi.conf in the flash drive",
+                    "X":"0.34375",
+                    "Y":"0.15",
+                    "FontType":"Bold",
+                    "FontSize":"0.0375",
+                    "FontColor":"0,0,0"
+                }
+            ],
+            "Buttons":[
+                {
+                    "ButtonName":"Update WiFi",
+                    "X":"0.34375",
+                    "Y":"0.23",
+                    "Width":"0.46875",
+                    "Height":"0.15",
+                    "ButtonType":"Text",
+                    "Title":"Update WiFi",
+                    "FontType":"Regular",
+                    "FontSize":"0.05",
+                    "FontColor":"0,0,0",
+                    "bgColor":"255,255,255"
+                }
+            ]
+        }
+    ]
+}

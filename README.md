@@ -1,87 +1,132 @@
-BEECONNECT by ![www.beeverycreative.com](https://www.beeverycreative.com/client/skins/images/logo.png "Logo Title Text 1")
-===============================
+Copyright (c) 2015 BEEVC - Electronic Systems This file is part of BEESOFT software: 
+you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+BEESOFT is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with BEESOFT. If not, see <http://www.gnu.org/licenses/>.
 
-The BEETHEFIRST 3D printer was built around the [R2C2](http://www.3dprinting-r2c2.com/) electronic board and is a RepRap printer at heart (however we are using a custom usb communication protocol).
+## Changelog ##
 
-Our goals are:
-* To make the BEETF more compatible overall and allowing users to enjoy their favourite 3D printing software or customize their slicer settings;
-* To ensure compatibility for the best 3D printing projects;
-* To develop a steping stone for open-source colaboration.
-* Also to develop Wi-Fi/LAN connectivity for the BEETHEFIRST 3D print;
+## v0.2  ##
 
-The first of the projects that we will ensure 100% compatibility is the [Octoprint](http://octoprint.org/) an amazing responsive web interface for controlling your 3D printer that runs on the [Raspberry Pi](http://www.raspberrypi.org/). 
+Printer Info screen is now updated with:
+    * Printer satus
+    * Printer firmware version
+    * BeeConnect Version
+    * Ethernet address
+    * Wireless SSID
+    * Wireless IP
 
-You can follow and contact us for development on [BEECONNECT Google Groups page](https://groups.google.com/forum/#!forum/beeconnect).
+### v0.1 ###
 
+* Printer status update
+* Print finish notification screen
+* Images for movement and mantainance actions
 
-Version History
-===============
+## BeePanel Beta ##
 
-* BECONNECT v0.1 (this is where we are right now)
-  * BEETF Communication API using [pyUSB](https://github.com/walac/pyusb/)
-  * USB command line interface into the BEETF
-  * linux-driver and intructions; 
-  * Octoprint compatibility using PyUsb to launch the BEETF in serial COM mode.
+Beepanel creates a small interface to control you BeeTheFirst 3D Printer. <br/>
+BeePanel grants you access to mantainance operations directly on the touch screen. <br/>
+BeePanel allows you to run custom gcodes on your BTF Printer, using USB Mass storage devices to transfer the code directly to the pritner. <br/>
 
-* BECONNECT v1.0 (next step)
-  * multi-system user-friendly installations
-  * Complete, ready-to-user, Raspberry Pi Kit optimized for the BEETF
-
-* BECONNECT v2.0 (somewhere over the rainbow)
-  * we are not sure, what lies ahead ;)
-
-
-Install image
-=============
-Follow [this steps](https://github.com/raspberrypi/documentation/blob/master/installation/installing-images/README.md)"Writing an image to the SD card") to install a prepared image of BEECONNECT. 
-Download the images from here: [beeconnect_v01.dmg.zip](https://www.beeverycreative.com/public/software/software/beeconnect_v01.dmg.zip); [beeconnect_v01.iso.zip](https://www.beeverycreative.com/public/software/software/beeconnect_v01.iso.zip).
-You will need a 8GB SD card. 
+https://github.com/beeverycreative/BeePanel
 
 
-Setup on RPI from scratch
-=========================
-We found that the easiest way to setup Octprint on your Raspberry Pi is to use [OctoPi](https://github.com/guysoft/OctoPi) 
-> A Raspberry Pi distribution for 3D printers. It includes the OctoPrint host software for 3D printers out of the box and mjpg-streamer with rapicam support for live viewing of prints and timelapse video creation.
+## Working on ##
 
-OctoPi for the BEETF can easily be installed by downloading our pre-configured [image](ftp://beeverycreative.com) and following the steps described in [OctoPi](https://github.com/guysoft/OctoPi) 
+* Printing menu bug when touch image
+* Pause
+* Shutdown
+* Wifi Configuration
+* Wireless File transfer
 
-1. unzip the image and dd it to an sd card like any other Raspberry Pi image
-2. boot the pi and connect it to a lan or wifi network, like any other Rasbpian installation.
-3. OctoPrint is located at `http://octopi.local <http://octopi.local>`_ and also at `https://octopi.local <https://octopi.local>`_. > Since the SSL certificate is self signed (and generated upon first boot), you will get a certificate warning at the latter location, please ignore it.
-4. If a webcam was plugged in, MJPG-streamer is on port 8080. You can reach it at: `http://octopi.local:8080/?action=stream <octopi.local:8080/?action=stream>`_. It is also setup so that you can reach it under `http://octopi.local/webcam/?action=stream <octopi.local/webcam/?action=stream>`_ and SSL respectively.
+
+## Setup ##
+
+### Requirements ###
+
+* Raspberry Pi running Raspbian
+* LCD Touch Dispaly with STMPE610 + ILI9341 controllers (e.g. Adafruit PiTFT (http://adafru.it/1601))
+* Python 3.4
+* PyGame
 
 
 
+### Reccommended Install ###
+We recommend you to install BeePanel by burning the Available Image into a SD card. <br/>
+To burn the image follow these steps: <br/>
 
-Setup on existing OctoPi or Linux based system
-==============================================
+*   Download the .img file. <br/>
+*   Insert a 4GB+ SD card in your SD card reader. <br/>
+*   Follow instructions on how to burn the .img. (http://www.raspberrypi.org/documentation/installation/installing-images/) <br/>
 
-BEECONNECT tools can be installed by cloning this repository and installing them.
+However if you wish to install it on an existing raspbian image read section "Installing BeePanel in an existing Raspbian Image" and follow the instructions. <br/>
 
-    git clone https://github.com/beeverycreative/beeconnect.git
-    cd beeconnect
-    sudo python setup.py install
+## Update ##
 
+To update, open a ssh session with using the username "pi" and the default password "1234":
 
+    * In Windows use putty (or similar)
+    * In Osx or Linux, open terminal and type "ssh pi@IP_ADDRESS", or "ssh pi@HOSTNAME.local"
 
-Dependencies
-------------
+In the ssh session console type:
 
-- PyUsb 1.0
-- Python >= 2.7or >= 3.3
+        cd
+        cd BeePanel
+        sudo git pull
+        sudo python3 setup.py install
+        
+        
+## Installing BeePanel in an existing Raspbian Image ##
 
+### Install Bonjour/Zeroconf ###
 
-Documentation
-------------
+        cd
+        sudo apt-get update
+        sudo apt-get install libnss-mdns
 
-- [g-codes implemented](https://github.com/beeverycreative/beeconnect/blob/develop/beetf/gcode.md)
-- [CURA setup for BEETHEFIRST.pdf](https://github.com/beeverycreative/beeconnect/blob/develop/documentation/CURA%20setup%20for%20BEETHEFIRST.pdf)
+### Install Adafruit PiTFT ###
 
-Resources
-------------
-git ignore rules from (https://github.com/github/gitignore) under [MIT](https://github.com/github/gitignore/blob/master/LICENSE)
+        cd
+        wget http://adafru.it/pitftsh
+        mv pitftsh pitft.sh
+        chmod +x pitft.sh
+        sudo ./pitft.sh -t 28c -r 
 
-License
--------
+When asked if you want show console on the screen type "n" and press enter. Same thing fot the shuthdown option on button 23.
 
-MIT licensed. See the bundled `LICENSE <https://github.com/rui-teixeira/beetf/blob/master/LICENSE>`_ file for more details.
+### Instal USB automount ### 
+
+        sudo apt-get install usbmount
+        
+### Install PyGame ###
+
+        cd
+        sudo apt-get install mercurial
+        hg clone https://bitbucket.org/pygame/pygame
+        cd pygame
+
+        sudo apt-get install libsdl-dev libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev 
+        sudo apt-get install libsmpeg-dev libportmidi-dev libavformat-dev libswscale-dev
+
+        python3 setup.py build
+        sudo python3 setup.py install
+        
+### Install PyUSB ###
+
+        cd
+        git clone https://github.com/walac/pyusb.git git/pyusb
+        cd git/pyusb
+        sudo python3 setup.py install
+        
+### BeePanel ###
+
+        cd
+        git clone https://github.com/beeverycreative/BeePanel.git
+        cd BeePanel/
+        sudo python3 setup.py install
+        
+### Python Modules ###
+
+        sudo apt-get install python3-pip
+        sudo pip-3.2 install netifaces
+        
+        sudo reboot

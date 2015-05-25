@@ -1,0 +1,63 @@
+{
+    "PrinterInfo":[
+        {
+            "ValuesSettings":
+                {
+                    "X":"0.6875",
+                    "FontType":"Regular",
+                    "FontSize":"0.05",
+                    "FontColor":"0,0,0"
+                },
+            "Labels":[
+                {
+                    "Text":"Printer Status:",
+                    "X":"0.34375",
+                    "Y":"0.083",
+                    "FontType":"Bold",
+                    "FontSize":"0.05",
+                    "FontColor":"0,0,0"
+                },
+                {
+                    "Text":"Firmware:",
+                    "X":"0.34375",
+                    "Y":"0.2",
+                    "FontType":"Bold",
+                    "FontSize":"0.05",
+                    "FontColor":"0,0,0"
+                },
+                {
+                    "Text":"BeeConnect:",
+                    "X":"0.34375",
+                    "Y":"0.33",
+                    "FontType":"Bold",
+                    "FontSize":"0.05",
+                    "FontColor":"0,0,0"
+                },
+                {
+                    "Text":"Local IP:",
+                    "X":"0.34375",
+                    "Y":"0.45",
+                    "FontType":"Bold",
+                    "FontSize":"0.05",
+                    "FontColor":"0,0,0"
+                },
+                {
+                    "Text":"Wireless SSID:",
+                    "X":"0.34375",
+                    "Y":"0.583",
+                    "FontType":"Bold",
+                    "FontSize":"0.05",
+                    "FontColor":"0,0,0"
+                },
+                {
+                    "Text":"Wireless IP:",
+                    "X":"0.34375",
+                    "Y":"0.71",
+                    "FontType":"Bold",
+                    "FontSize":"0.05",
+                    "FontColor":"0,0,0"
+                }
+            ]
+        }
+    ]
+}

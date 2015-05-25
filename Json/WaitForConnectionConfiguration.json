@@ -1,0 +1,29 @@
+{
+    "WaitForConnection":[
+        {
+            "Labels":[
+                {
+                    "Text":"Ups... where's the BEE?",
+                    "X":"0.03125",
+                    "Y":"0.04",
+                    "FontType":"Regular",
+                    "FontSize":"0.05",
+                    "FontColor":"0,0,0"
+                },
+                {
+                    "Text":"...please connect your BTF pritner",
+                    "X":"0.375",
+                    "Y":"0.92",
+                    "FontType":"Regular",
+                    "FontSize":"0.045",
+                    "FontColor":"0,0,0"
+                }
+            ],
+            "Image":{
+                "ImgPath":"/Images/logo_Start.png",
+                "X":"0",
+                "Y":"0"
+            }
+        }
+    ]
+}
