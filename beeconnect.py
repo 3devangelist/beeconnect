@@ -13,11 +13,11 @@
 """
 
 r"""
-BeePanel - Main class
+beeconnect - Main class
 
 This file exports:
 
-BeePanel Class:
+beeconnect Class:
     Class called to handle the interface and application activity
 
 restart_app() method to start the application within the application
@@ -224,7 +224,7 @@ class BeePanel():
         """
         print("Drawing Interfaces")
         pygame.init()
-        pygame.mouse.set_visible(False)
+        pygame.mouse.set_visible(True)
         
         self.screen = self.BEEDisplay.GetBEEScreen()
         self.screen.fill(self.BEEDisplay.GetbgColor())

@@ -240,9 +240,9 @@ class FileBrowserLoader():
         Load Progress Bar Configuration
         """
         pBarJson = json.loads(json.dumps(self.interfaceJson['ProgressBar']))
-        pBarX = int(float(pBarJson['X'])*self.displayHeight)
+        pBarX = int(float(pBarJson['X'])*self.displayWidth)
         pBarY = int(float(pBarJson['Y'])*self.displayHeight)
-        pBarWidth = int(float(pBarJson['Width'])*self.displayHeight)
+        pBarWidth = int(float(pBarJson['Width'])*self.displayWidth)
         pBarHeight = int(float(pBarJson['Height'])*self.displayHeight)
         pBarThickness = int(pBarJson['Thickness'])
         pBarLineColorRGB = pBarJson['LineColor']

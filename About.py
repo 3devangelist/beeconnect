@@ -264,7 +264,7 @@ class AboutScreen():
         
         self.ShowLoadingScreen()
         os.system('git pull')
-        os.system('python3 setup.py install')
+        os.system('sudo python3 setup.py install')
         
         self.exitCallBackResp = "Exit"
             

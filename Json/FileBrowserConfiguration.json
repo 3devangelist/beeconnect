@@ -14,7 +14,7 @@
             "SecondTopLabel":
                     {
                         "_comment":"Top label for the Transfering interface",
-                        "Text":"Transfering... Please Wait",
+                        "Text":"",
                         "X":"0.34375",
                         "Y":"0.02",
                         "FontType":"Bold",
@@ -133,9 +133,9 @@
             "TransfImage":
                 {
                     "_comment":"Image for the Tranfering interface",
-                    "ImgPath":"/Images/beeBWVectorSmall.png",
-                    "X":"0.46875",
-                    "Y":"0.2"
+                    "ImgPath":"/Images/trasnferringSmall.png",
+                    "X":"0.3175",
+                    "Y":"0.0"
                 },
         "ThirdButtons":[
                 {
@@ -156,9 +156,9 @@
         "HeatImage":
                 {
                     "_comment":"Image for the heating interface",
-                    "ImgPath":"/Images/beeBWVectorSmall.png",
-                    "X":"0.46875",
-                    "Y":"0.2"
+                    "ImgPath":"/Images/heating.png",
+                    "X":"0.34375",
+                    "Y":"0.0"
                 },
         "ProgressBar":
                 {
