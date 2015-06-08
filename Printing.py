@@ -27,6 +27,7 @@ class PrintScreen():
     interfaceLoader = None
     printing = None
     exit = None
+    aliveTimer = 0;
     
     lblFontColor = None
     lblXPos = None
@@ -133,6 +134,8 @@ class PrintScreen():
         self.colorNameList = self.colorCodes.GetColorNameList()
         self.colorCodeList = self.colorCodes.GetColorCodeList()
         self.colorList = self.colorCodes.GetColorList()
+        
+        
         
         return
 

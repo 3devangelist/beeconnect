@@ -103,9 +103,8 @@ class SettingsScreen():
                             os.system('sudo reboot')
                     elif btnName == "Screen Calibration":
                         os.system("sudo TSLIB_FBDEVICE=/dev/fb1 TSLIB_TSDEVICE=/dev/input/touchscreen ts_calibrate")
-                    elif btnName == "Quit BEETFT":
-                        #pygame.quit()
-                        self.exitCallBackResp = "Quit"
+                    elif btnName == "Shutdown":
+                        os.system('sudo shutdown -h now')
         
         return
 

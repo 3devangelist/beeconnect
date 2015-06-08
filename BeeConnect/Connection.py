@@ -37,9 +37,9 @@ __license__ = ""
 import usb
 import usb.core
 import usb.util
-import usb.backend.libusb1 as libusb1
-import usb.backend.libusb0 as libusb0
-import usb.backend.openusb as openusb
+#import usb.backend.libusb1 as libusb1
+#import usb.backend.libusb0 as libusb0
+#import usb.backend.openusb as openusb
 import sys
 import os
 import time
@@ -95,29 +95,33 @@ class Con():
         self.connected = False
         
         # find our device
-        self.dev = usb.core.find(idVendor=0xffff, idProduct=0x014e,backend=libusb1.get_backend())
+        #self.dev = usb.core.find(idVendor=0xffff, idProduct=0x014e,backend=libusb1.get_backend())
         #self.dev = usb.core.find(idVendor=0xffff, idProduct=0x014e,backend=libusb0.get_backend())
         #self.dev = usb.core.find(idVendor=0xffff, idProduct=0x014e,backend=openusb.get_backend())
-        #self.dev = usb.core.find(idVendor=0xffff, idProduct=0x014e)
+        self.dev = usb.core.find(idVendor=0xffff, idProduct=0x014e)
         
         if(self.dev is not None):
             print("BTF Old Connected")
         
         # was it found? no, try the other device
         if self.dev is None:
-            self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0001,backend=libusb1.get_backend())
+            #self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0001,backend=libusb1.get_backend())
+            self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0001)
             if(self.dev is not None):
                 print("BTF New Connected")
         if self.dev is None:
-            self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0002,backend=libusb1.get_backend())
+            #self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0002,backend=libusb1.get_backend())
+            self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0002)
             if(self.dev is not None):
                 print("BTF Plus Connected")
         if self.dev is None:
-            self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0003,backend=libusb1.get_backend())
+            #self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0003,backend=libusb1.get_backend())
+            self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0003)
             if(self.dev is not None):
                 print("BTF ME Connected")
         if self.dev is None:
-            self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0004,backend=libusb1.get_backend())
+            #self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0004,backend=libusb1.get_backend())
+            self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0004)
             if(self.dev is not None):
                 print("BTF School Connected")
         elif self.dev is None:
@@ -290,6 +294,49 @@ class Con():
                 resp = self.waitFor(cmd,wait,timeout)
         
         return resp
+    
+    """*************************************************************************
+                            echo Method 
+
+    *************************************************************************"""
+    def echo(self):
+        r"""
+        echo method
+        
+        sends echo command to verify printer connection
+        
+        arguments:
+            None
+            
+        returns:
+            True - printer responded
+            False - printer did not respond
+        """
+        
+        timeout = self.READ_TIMEOUT
+        
+        time.sleep(0.009)
+        self.ep_out.write('M639 ECHO\n')
+        time.sleep(0.009)
+        
+        sret = ""
+        tries = 10
+        while tries > 0:
+            try:
+                ret = self.ep_in.read(self.DEFAULT_READ_LENGTH, timeout)
+                sret = ''.join([chr(x) for x in ret])
+                if('echo' in sret.lower()):
+                    break
+            except usb.core.USBError as e:
+                if ("timed out" in str(e.args)):
+                    return 'timeout'
+                
+            tries -= 1
+            
+        if tries <= 0:
+            return False
+        else:
+            return True
 
     """*************************************************************************
                             waitFor Method 
@@ -315,6 +362,7 @@ class Con():
         resp = ""
         while(s not in resp):
             try:
+                self.write('')
                 resp += self.read()
             except Exception:
                 pass

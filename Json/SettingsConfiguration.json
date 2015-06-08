@@ -32,6 +32,19 @@
                     "FontSize":"0.05",
                     "FontColor":"0,0,0",
                     "bgColor":"255,255,255"
+                },
+                {
+                    "ButtonName":"Shutdown",
+                    "X":"0.34375",
+                    "Y":"0.43",
+                    "Width":"0.46875",
+                    "Height":"0.15",
+                    "ButtonType":"Text",
+                    "Title":"Shutdown",
+                    "FontType":"Regular",
+                    "FontSize":"0.05",
+                    "FontColor":"0,0,0",
+                    "bgColor":"255,255,255"
                 }
             ]
         }

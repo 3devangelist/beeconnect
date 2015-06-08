@@ -86,6 +86,7 @@ class BeePanel():
     displayWidth = 480
     displayHeight = 320
     ff = None
+    aliveTimer = 1;
     
     """
     BEEConnect vars
@@ -224,7 +225,7 @@ class BeePanel():
         """
         print("Drawing Interfaces")
         pygame.init()
-        pygame.mouse.set_visible(False)
+        pygame.mouse.set_visible(True)
         
         self.screen = self.BEEDisplay.GetBEEScreen()
         self.screen.fill(self.BEEDisplay.GetbgColor())
@@ -247,7 +248,7 @@ class BeePanel():
         waitScreen.KillAll()
         waitScreen = None
         
-        
+        self.aliveTimer = time.time()
 
         
         return
@@ -340,6 +341,13 @@ class BeePanel():
                     self.exitApp = True
                     self.done = True
                 break
+            
+            if(time.time() > self.aliveTimer + 1):
+                #self.beeCmd.beeCon.sendCmd(cmd='M639 ECHO',wait = 'ECHO')
+                #resp = self.beeCmd.beeCon.echo()
+                resp = self.beeCmd.beeCon.echo()
+                #print('Alive: ', resp)
+                self.aliveTimer = time.time()
             
         #pygame.quit()
             
