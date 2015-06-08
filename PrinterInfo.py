@@ -35,6 +35,7 @@ class PrinterInfoScreen():
     
     status = None
     fw = None
+    printerName = None
     localIp = '0.0.0.0'
     wirelessIP = None
     wirelessSSID = 'Disconnected'
@@ -116,8 +117,10 @@ class PrinterInfoScreen():
                 valText = self.status
             elif fieldText == "Firmware:":
                 valText = self.fw
+            elif fieldText == "Printer:":
+                valText = self.printerName
             elif fieldText == "BeeConnect:":
-                valText = "v0.1"
+                valText = "v1.0"
             elif fieldText == "Local IP:":
                 valText = self.localIp
             elif fieldText == "Wireless SSID:":
@@ -168,6 +171,7 @@ class PrinterInfoScreen():
         self.lblValFontColor = None
         self.status = None
         self.fw = None
+        self.printerName = None
         self.wirelessIP = None
         self.wirelessSSID = None
         self.interfaceLoader = None
@@ -201,7 +205,15 @@ class PrinterInfoScreen():
             self.nextPullTime = time.time() + self.pullInterval
             
             self.status = self.beeCmd.getStatus()
-            self.fw = self.beeCmd.GetFirmwareVersion()
+            
+            fwString = self.beeCmd.GetFirmwareVersion()
+            if('-' in fwString):
+                fwSplits = fwString.split('-')
+                self.fw = fwSplits[len(fwSplits)-1]
+            else:
+                self.fw = fwString
+            
+            self.printerName = self.beeCmd.beeCon.printerName
             self.getIP()
         
         return

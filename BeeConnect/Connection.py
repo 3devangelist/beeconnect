@@ -61,6 +61,8 @@ class Con():
     connected = None
     
     backend = None
+    
+    printerName = None
 
     """*************************************************************************
                                 Init Method 
@@ -99,6 +101,7 @@ class Con():
         #self.dev = usb.core.find(idVendor=0xffff, idProduct=0x014e,backend=libusb0.get_backend())
         #self.dev = usb.core.find(idVendor=0xffff, idProduct=0x014e,backend=openusb.get_backend())
         self.dev = usb.core.find(idVendor=0xffff, idProduct=0x014e)
+        self.printerName = 'BEETHEFIRST'
         
         if(self.dev is not None):
             print("BTF Old Connected")
@@ -109,21 +112,25 @@ class Con():
             self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0001)
             if(self.dev is not None):
                 print("BTF New Connected")
+                self.printerName = 'BEETHEFIRST'
         if self.dev is None:
             #self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0002,backend=libusb1.get_backend())
             self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0002)
             if(self.dev is not None):
                 print("BTF Plus Connected")
+                self.printerName = 'BEETHEFIRST+'
         if self.dev is None:
             #self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0003,backend=libusb1.get_backend())
             self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0003)
             if(self.dev is not None):
                 print("BTF ME Connected")
+                self.printerName = 'BEEME'
         if self.dev is None:
             #self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0004,backend=libusb1.get_backend())
             self.dev = usb.core.find(idVendor=0x29c9, idProduct=0x0004)
             if(self.dev is not None):
                 print("BTF School Connected")
+                self.printerName = 'BEEINSCHOOL'
         elif self.dev is None:
                 raise ValueError('Device not found')
 

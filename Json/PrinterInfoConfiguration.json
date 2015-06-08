@@ -56,6 +56,14 @@
                     "FontType":"Bold",
                     "FontSize":"0.05",
                     "FontColor":"0,0,0"
+                },
+                {
+                    "Text":"Printer:",
+                    "X":"0.34375",
+                    "Y":"0.837",
+                    "FontType":"Bold",
+                    "FontSize":"0.05",
+                    "FontColor":"0,0,0"
                 }
             ]
         }
