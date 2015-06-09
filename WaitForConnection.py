@@ -96,7 +96,9 @@ class WaitScreen():
         
         self.nextPullTime = time.time() + 0.5
         
-        while (not self.connected) and (not self.exit):
+        tries = 10
+        
+        while (not self.connected) and (not self.exit) and (tries > 0):
             # Handle events
             self.handle_events()
             
@@ -111,6 +113,7 @@ class WaitScreen():
                     if('Firmware' in resp):
                         
                         self.connected = self.beeCon.connected
+                        return True
 
                     elif('Bootloader' in resp):
 
@@ -120,6 +123,7 @@ class WaitScreen():
                         time.sleep(1)
                         
                         self.beeCon = None
+                        return True
                     else:
                         cleaningTries = 5
                         clean = False
@@ -140,9 +144,13 @@ class WaitScreen():
                         #return None
                     
                 self.nextPullTime = time.time() + 0.5
-                print("Wait for connection")
+                #print("Wait for connection")
+                tries -= 1
+        
+        if(tries <= 0):
+            print('Printer not found')
             
-        return
+        return False
     
 
     """*************************************************************************
