@@ -75,7 +75,7 @@ class CalibrationScreen():
         self.leftBoltImgY = self.interfaceLoader.GetLeftImgY()
         
         
-        self.ShowWaitScreen()
+        self.ShowMovingScreen()
         self.beeCmd.GoToFirstCalibrationPoint()
         pygame.event.get()
         
@@ -97,6 +97,7 @@ class CalibrationScreen():
                     if btnName == "Next":
                         self.calibrationState = self.calibrationState + 1
                         if self.calibrationState > 2:
+                            self.ShowWaitScreen()
                             self.exitCallBackResp = "Restart"
                             self.calibrationState = 2
                         else:
@@ -107,10 +108,10 @@ class CalibrationScreen():
                             self.lblFontColor = self.interfaceLoader.GetlblFontColor(self.calibrationState)
                             self.buttons = self.interfaceLoader.GetButtonsList(self.calibrationState)
                             if self.calibrationState == 1:
-                                self.ShowWaitScreen()
+                                self.ShowMovingScreen()
                                 self.beeCmd.GoToSecondCalibrationPoint()
                             elif self.calibrationState == 2:
-                                self.ShowWaitScreen()
+                                self.ShowMovingScreen()
                                 self.beeCmd.GoToThirdCalibrationPoint()
                     
                     elif btnName == "+0.5mm":
@@ -216,11 +217,11 @@ class CalibrationScreen():
         return
     
     """*************************************************************************
-                                ShowWaitScreen Method 
+                                ShowMovingScreen Method 
     
     Shows Wait Screen 
     *************************************************************************"""  
-    def ShowWaitScreen(self):
+    def ShowMovingScreen(self):
         
         #Clear String
         self.screen.fill(pygame.Color(255,255,255))
@@ -234,6 +235,33 @@ class CalibrationScreen():
 
         # Draw Image
         self.screen.blit(movingImg,(0,0))
+        
+        # update screen
+        pygame.display.update()
+        
+        pygame.event.get()
+        
+        return
+    
+    """*************************************************************************
+                                ShowWaitScreen Method 
+    
+    Shows Loading Screen 
+    *************************************************************************"""  
+    def ShowWaitScreen(self):
+        
+        #Clear String
+        self.screen.fill(pygame.Color(255,255,255))
+        
+        if(self.ff is None):
+            self.ff = FileFinder.FileFinder()
+        
+        moovingImgPath = self.ff.GetAbsPath('/Images/please_wait.png')
+        
+        moovingImg = pygame.image.load(moovingImgPath)
+
+        # Draw Image
+        self.screen.blit(moovingImg,(0,0))
         
         # update screen
         pygame.display.update()

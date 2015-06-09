@@ -120,7 +120,7 @@ class FilamentChangeScreen():
         self.beeCmd.SetNozzleTemperature(self.targetTemperature)
         
         #Go to Heat Position
-        self.ShowWaitScreen()
+        self.ShowMovingScreen()
         self.beeCmd.homeZ()
         self.beeCmd.homeXY()
         self.beeCmd.GoToHeatPos()
@@ -155,7 +155,7 @@ class FilamentChangeScreen():
                     if btnName == "Next":
                         if self.interfaceState == 0:
                             self.interfaceState = 1
-                            self.ShowWaitScreen()
+                            self.ShowMovingScreen()
                             self.beeCmd.GoToRestPos()
                         elif self.interfaceState == 2:
                             self.interfaceState = 1
@@ -172,6 +172,7 @@ class FilamentChangeScreen():
                             if(self.selectedColorName == "Unknown"):
                                 self.interfaceState = 3
                             else:
+                                self.ShowWaitScreen()
                                 self.exitCallBackResp = "Restart"
                     elif btnName == "Pick Color":
                         self.interfaceState = self.interfaceState + 1
@@ -409,11 +410,11 @@ class FilamentChangeScreen():
         return
     
     """*************************************************************************
-                                ShowWaitScreen Method 
+                                ShowMovingScreen Method 
     
     Shows Wait Screen 
     *************************************************************************"""  
-    def ShowWaitScreen(self):
+    def ShowMovingScreen(self):
         
         #Clear String
         self.screen.fill(pygame.Color(255,255,255))
@@ -487,4 +488,31 @@ class FilamentChangeScreen():
         
         pygame.event.get()
         
-        return 
+        return
+    
+    """*************************************************************************
+                                ShowWaitScreen Method 
+    
+    Shows Loading Screen 
+    *************************************************************************"""  
+    def ShowWaitScreen(self):
+        
+        #Clear String
+        self.screen.fill(pygame.Color(255,255,255))
+        
+        if(self.ff is None):
+            self.ff = FileFinder.FileFinder()
+        
+        moovingImgPath = self.ff.GetAbsPath('/Images/please_wait.png')
+        
+        moovingImg = pygame.image.load(moovingImgPath)
+
+        # Draw Image
+        self.screen.blit(moovingImg,(0,0))
+        
+        # update screen
+        pygame.display.update()
+        
+        pygame.event.get()
+        
+        return

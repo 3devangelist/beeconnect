@@ -441,7 +441,7 @@ class PrintScreen():
                         if(self.numberLines == 0):
                             self.timeRemaining = 'Printing Info is Not Available'
                         else:
-                            self.timeRemaining = 'Taking longer than expected'
+                            self.timeRemaining = 'Error reading print variables'
                         self.executedLines = self.numberLines
          
         return
