@@ -201,7 +201,7 @@ class BeePanel():
         """
         print("Drawing Interfaces")
         pygame.init()
-        pygame.mouse.set_visible(True)
+        pygame.mouse.set_visible(False)
         
         self.screen = self.BEEDisplay.GetBEEScreen()
         self.screen.fill(self.BEEDisplay.GetbgColor())
@@ -320,7 +320,7 @@ class BeePanel():
                     self.done = True
                 break
             
-            if(time.time() > self.aliveTimer + 5):
+            if(time.time() > self.aliveTimer + 2):
                 #self.beeCmd.beeCon.sendCmd(cmd='M639 ECHO',wait = 'ECHO')
                 #resp = self.beeCmd.beeCon.echo()
                 resp = self.beeCmd.beeCon.echo()

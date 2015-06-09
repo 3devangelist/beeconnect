@@ -248,6 +248,7 @@ class FileBrowserScreen():
                         buttonEvent = True
                         break
                     elif btnName == "Print":
+                        self.ShowWaitScreen()
                         self.StartPrint()
                         
                         buttonEvent = True

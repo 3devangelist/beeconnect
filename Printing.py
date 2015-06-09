@@ -158,6 +158,7 @@ class PrintScreen():
                     
                     if btnName == "Cancel":
                         if(self.interfaceState == 0):
+                            self.ShowWaitScreen()
                             self.beeCmd.cancelSDPrint()
                             self.ShowMovingScreen()
                             printerReady = False
@@ -538,4 +539,29 @@ class PrintScreen():
         
         return
     
+    """*************************************************************************
+                                ShowWaitScreen Method 
     
+    Shows Loading Screen 
+    *************************************************************************"""  
+    def ShowWaitScreen(self):
+        
+        #Clear String
+        self.screen.fill(pygame.Color(255,255,255))
+        
+        if(self.ff is None):
+            self.ff = FileFinder.FileFinder()
+        
+        moovingImgPath = self.ff.GetAbsPath('/Images/please_wait.png')
+        
+        moovingImg = pygame.image.load(moovingImgPath)
+
+        # Draw Image
+        self.screen.blit(moovingImg,(0,0))
+        
+        # update screen
+        pygame.display.update()
+        
+        pygame.event.get()
+        
+        return

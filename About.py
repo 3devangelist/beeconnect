@@ -238,7 +238,8 @@ class AboutScreen():
     *************************************************************************""" 
     def Check4Updates(self):
         
-        self.ShowLoadingScreen()
+        #self.ShowLoadingScreen()
+        self.ShowWaitScreen()
         os.system('git remote update')
         
         r = os.popen('git status -uno').read()
@@ -297,4 +298,30 @@ class AboutScreen():
         
         return
     
+    """*************************************************************************
+                                ShowWaitScreen Method 
+    
+    Shows Loading Screen 
+    *************************************************************************"""  
+    def ShowWaitScreen(self):
+        
+        #Clear String
+        self.screen.fill(pygame.Color(255,255,255))
+        
+        if(self.ff is None):
+            self.ff = FileFinder.FileFinder()
+        
+        moovingImgPath = self.ff.GetAbsPath('/Images/please_wait.png')
+        
+        moovingImg = pygame.image.load(moovingImgPath)
+
+        # Draw Image
+        self.screen.blit(moovingImg,(0,0))
+        
+        # update screen
+        pygame.display.update()
+        
+        pygame.event.get()
+        
+        return
     
