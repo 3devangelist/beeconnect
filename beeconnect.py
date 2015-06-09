@@ -178,31 +178,7 @@ class BeePanel():
         """
         Left Menu Loader
         """
-        self.leftMenuLoader = self.jsonLoader.GetLeftMenuLoader()
-        
-        self.carouselButtons = self.leftMenuLoader.GetCarouselButtons()
-        
-        self.currentIdx = 0
-        self.carouselItems = self.leftMenuLoader.GetCarouselItems()
-        self.carouselX = self.leftMenuLoader.GetCarouselX()
-        self.carouselY = self.leftMenuLoader.GetCarouselY()
-        self.carouselWidth = self.leftMenuLoader.GetCarouselWidth()
-        self.carouselHeight = self.leftMenuLoader.GetCarouselHeight()
-        self.carouselButtonHeight = self.leftMenuLoader.GetCarouselButtonHeight()
-        
-        self.buttonNames = self.leftMenuLoader.GetCarouselButtonNames()
-        self.buttonTitles = self.leftMenuLoader.GetCarouselButtonTitles()
-        
-        self.carouselBgR = self.leftMenuLoader.GetBgR()
-        self.carouselBgG = self.leftMenuLoader.GetBgG()
-        self.carouselBgB = self.leftMenuLoader.GetBgB()
-        self.carouselFR = self.leftMenuLoader.GetFR()
-        self.carouselFG = self.leftMenuLoader.GetFG()
-        self.carouselFB = self.leftMenuLoader.GetFB()
-        
-        self.carouselFontType = self.leftMenuLoader.GetCarouselFontType()
-        self.carouselFontSize = self.leftMenuLoader.GetCarouselFontSize()
-        
+        self.InitLeftMenu()
         self.UpdateLeftButtons()
         
         """
@@ -337,17 +313,22 @@ class BeePanel():
                 if(self.currentScreen.exitCallBackResp == "Restart"):
                     self.done = True
                     self.currentScreenName = self.jsonLoader.GetDefaultScreen()
+                    self.GetBEEStatus()
+                    self.UpdateLeftButtons()
                 elif(self.currentScreen.exitCallBackResp == "Exit"):
                     self.exitApp = True
                     self.done = True
                 break
             
-            if(time.time() > self.aliveTimer + 1):
+            if(time.time() > self.aliveTimer + 5):
                 #self.beeCmd.beeCon.sendCmd(cmd='M639 ECHO',wait = 'ECHO')
                 #resp = self.beeCmd.beeCon.echo()
                 resp = self.beeCmd.beeCon.echo()
                 #print('Alive: ', resp)
                 self.aliveTimer = time.time()
+                self.GetBEEStatus()
+            
+            
             
         #pygame.quit()
             
@@ -498,12 +479,48 @@ class BeePanel():
         
         return
     
+    
+    """*************************************************************************
+                                InitLeftMenu Method 
+    
+    Inits Left Menu buttons to show
+    *************************************************************************"""  
+    def InitLeftMenu(self):
+        
+        self.leftMenuLoader = self.jsonLoader.GetLeftMenuLoader()
+        
+        self.carouselButtons = self.leftMenuLoader.GetCarouselButtons()
+        
+        self.currentIdx = 0
+        self.carouselItems = self.leftMenuLoader.GetCarouselItems()
+        self.carouselX = self.leftMenuLoader.GetCarouselX()
+        self.carouselY = self.leftMenuLoader.GetCarouselY()
+        self.carouselWidth = self.leftMenuLoader.GetCarouselWidth()
+        self.carouselHeight = self.leftMenuLoader.GetCarouselHeight()
+        self.carouselButtonHeight = self.leftMenuLoader.GetCarouselButtonHeight()
+        
+        self.buttonNames = self.leftMenuLoader.GetCarouselButtonNames()
+        self.buttonTitles = self.leftMenuLoader.GetCarouselButtonTitles()
+        
+        self.carouselBgR = self.leftMenuLoader.GetBgR()
+        self.carouselBgG = self.leftMenuLoader.GetBgG()
+        self.carouselBgB = self.leftMenuLoader.GetBgB()
+        self.carouselFR = self.leftMenuLoader.GetFR()
+        self.carouselFG = self.leftMenuLoader.GetFG()
+        self.carouselFB = self.leftMenuLoader.GetFB()
+        
+        self.carouselFontType = self.leftMenuLoader.GetCarouselFontType()
+        self.carouselFontSize = self.leftMenuLoader.GetCarouselFontSize()
+        
+        return
+    
     """*************************************************************************
                                 UpdateLeftButtons Method 
     
     Updates Left Menu buttons to show
     *************************************************************************"""  
     def UpdateLeftButtons(self):
+        
         
         self.leftMenuButtons = []
         for i in range(0,self.carouselItems):
@@ -536,7 +553,7 @@ class BeePanel():
         
         self.BeeState = self.beeCmd.getStatus()
         
-        print("Printer Status: ",self.BeeState)
+        #print("Printer Status: ",self.BeeState)
         
         return
     

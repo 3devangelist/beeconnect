@@ -20,6 +20,7 @@ from time import time
 import Loaders.ColorCodesLoader
 import FileFinder
 import pygame
+import FileFinder
 
 class PrintScreen():
     
@@ -97,6 +98,7 @@ class PrintScreen():
     # conn = None
     beeCon = None
     beeCmd = None
+    ff = None
     
     exitNeedsHoming = False
     exitCallBackResp = None
@@ -157,6 +159,15 @@ class PrintScreen():
                     if btnName == "Cancel":
                         if(self.interfaceState == 0):
                             self.beeCmd.cancelSDPrint()
+                            self.ShowMovingScreen()
+                            printerReady = False
+                            delay = time()
+                            while(printerReady == False):
+                                if(time() > delay + 1):
+                                    st = self.beeCmd.getStatus()
+                                    if(st == 'Ready'):
+                                        printerReady = True
+                                
                         buttonEvent = True
                         self.exitCallBackResp = "Restart"
                         break
@@ -417,11 +428,21 @@ class PrintScreen():
                 if(self.executedLines >= self.numberLines):
                     h = self.elapsedTime//60
                     m = self.elapsedTime - (h * 60)
-                    self.timeRemaining = 'Print Finished. Total time: ' + str(int(h)) + 'h' + str(int(m))
-                    print(self.timeRemaining)
-                    self.interfaceState = 5
-                    self.UpdateVars()
-     
+                    
+                    printerStatus = self.beeCmd.getStatus()
+                    
+                    if(printerStatus != 'SD_Print'):
+                        self.timeRemaining = 'Print Finished. Total time: ' + str(int(h)) + 'h' + str(int(m))
+                        print(self.timeRemaining)
+                        self.interfaceState = 5
+                        self.UpdateVars()
+                    else:
+                        if(self.numberLines == 0):
+                            self.timeRemaining = 'Printing Info is Not Available'
+                        else:
+                            self.timeRemaining = 'Taking longer than expected'
+                        self.executedLines = self.numberLines
+         
         return
     
     """*************************************************************************
@@ -491,11 +512,11 @@ class PrintScreen():
         return
     
     """*************************************************************************
-                                ShowWaitScreen Method 
+                                ShowMovingScreen Method 
     
     Shows Wait Screen 
     *************************************************************************"""  
-    def ShowWaitScreen(self):
+    def ShowMovingScreen(self):
         
         #Clear String
         self.screen.fill(pygame.Color(255,255,255))
@@ -503,12 +524,12 @@ class PrintScreen():
         if(self.ff is None):
             self.ff = FileFinder.FileFinder()
         
-        moovingImgPath = self.ff.GetAbsPath('/Images/mooving.png')
+        moovingImgPath = self.ff.GetAbsPath('/Images/moving.png')
         
         moovingImg = pygame.image.load(moovingImgPath)
 
         # Draw Image
-        self.screen.blit(moovingImg,(96,56))
+        self.screen.blit(moovingImg,(0,0))
         
         # update screen
         pygame.display.update()
@@ -516,4 +537,5 @@ class PrintScreen():
         pygame.event.get()
         
         return
+    
     

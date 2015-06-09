@@ -228,12 +228,12 @@ class CalibrationScreen():
         if(self.ff is None):
             self.ff = FileFinder.FileFinder()
         
-        moovingImgPath = self.ff.GetAbsPath('/Images/moving.png')
+        movingImgPath = self.ff.GetAbsPath('/Images/moving.png')
         
-        moovingImg = pygame.image.load(moovingImgPath)
+        movingImg = pygame.image.load(movingImgPath)
 
         # Draw Image
-        self.screen.blit(moovingImg,(0,0))
+        self.screen.blit(movingImg,(0,0))
         
         # update screen
         pygame.display.update()

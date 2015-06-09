@@ -664,14 +664,15 @@ class FileBrowserScreen():
             currentTime = time.time()
             if(currentTime > self.nextPullTime):
                 self.nozzleTemperature = self.beeCmd.GetNozzleTemperature()
-                print('Nozzle Temperature: ', self.nozzleTemperature)
+                #print('Nozzle Temperature: ', self.nozzleTemperature)
                 
                 if(self.nozzleTemperature >= self.targetTemperature):
                     self.nozzleTemperature = self.targetTemperature
                     
                     #self.beeCmd.home()
                     self.beeCmd.SetNozzleTemperature(self.targetTemperature)
-                    self.ShowWaitScreen()
+                    self.ShowMovingScreen()
+                    self.beeCmd.beeCon.sendCmd('M31 A0 L0\n');
                     self.beeCmd.startSDPrint();
                     st = ''
                     while('SD_Print' not in st):
@@ -912,11 +913,11 @@ class FileBrowserScreen():
         return
     
     """*************************************************************************
-                                ShowWaitScreen Method 
+                                ShowMovingScreen Method 
     
     Shows Wait Screen 
     *************************************************************************"""  
-    def ShowWaitScreen(self):
+    def ShowMovingScreen(self):
         
         #Clear String
         self.screen.fill(pygame.Color(255,255,255))
@@ -952,6 +953,33 @@ class FileBrowserScreen():
             self.ff = FileFinder.FileFinder()
         
         moovingImgPath = self.ff.GetAbsPath('/Images/updating.png')
+        
+        moovingImg = pygame.image.load(moovingImgPath)
+
+        # Draw Image
+        self.screen.blit(moovingImg,(0,0))
+        
+        # update screen
+        pygame.display.update()
+        
+        pygame.event.get()
+        
+        return
+    
+    """*************************************************************************
+                                ShowWaitScreen Method 
+    
+    Shows Loading Screen 
+    *************************************************************************"""  
+    def ShowWaitScreen(self):
+        
+        #Clear String
+        self.screen.fill(pygame.Color(255,255,255))
+        
+        if(self.ff is None):
+            self.ff = FileFinder.FileFinder()
+        
+        moovingImgPath = self.ff.GetAbsPath('/Images/please_wait.png')
         
         moovingImg = pygame.image.load(moovingImgPath)
 

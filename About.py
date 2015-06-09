@@ -283,12 +283,12 @@ class AboutScreen():
         if(self.ff is None):
             self.ff = FileFinder.FileFinder()
         
-        moovingImgPath = self.ff.GetAbsPath('/Images/updating.png')
+        updateImgPath = self.ff.GetAbsPath('/Images/updating.png')
         
-        moovingImg = pygame.image.load(moovingImgPath)
+        updateImg = pygame.image.load(updateImgPath)
 
         # Draw Image
-        self.screen.blit(moovingImg,(0,0))
+        self.screen.blit(updateImg,(0,0))
         
         # update screen
         pygame.display.update()

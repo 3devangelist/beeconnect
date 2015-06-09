@@ -437,6 +437,7 @@ class Cmd():
         #set Temperature
         resp = self.beeCon.sendCmd(commandStr)
         #print(resp)
+        print('Set Temperature: ',str(t))
         
         return
     

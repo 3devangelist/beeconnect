@@ -104,6 +104,7 @@ class SettingsScreen():
                     elif btnName == "Screen Calibration":
                         os.system("sudo TSLIB_FBDEVICE=/dev/fb1 TSLIB_TSDEVICE=/dev/input/touchscreen ts_calibrate")
                     elif btnName == "Shutdown":
+                        self.ShowWaitScreen();
                         os.system('sudo shutdown -h now')
         
         return
@@ -217,6 +218,33 @@ class SettingsScreen():
             self.ff = FileFinder.FileFinder()
         
         moovingImgPath = self.ff.GetAbsPath('/Images/updating.png')
+        
+        moovingImg = pygame.image.load(moovingImgPath)
+
+        # Draw Image
+        self.screen.blit(moovingImg,(0,0))
+        
+        # update screen
+        pygame.display.update()
+        
+        pygame.event.get()
+        
+        return
+    
+    """*************************************************************************
+                                ShowWaitScreen Method 
+    
+    Shows Loading Screen 
+    *************************************************************************"""  
+    def ShowWaitScreen(self):
+        
+        #Clear String
+        self.screen.fill(pygame.Color(255,255,255))
+        
+        if(self.ff is None):
+            self.ff = FileFinder.FileFinder()
+        
+        moovingImgPath = self.ff.GetAbsPath('/Images/please_wait.png')
         
         moovingImg = pygame.image.load(moovingImgPath)
 
