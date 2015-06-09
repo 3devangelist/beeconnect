@@ -326,7 +326,8 @@ class BeePanel():
                 resp = self.beeCmd.beeCon.echo()
                 #print('Alive: ', resp)
                 self.aliveTimer = time.time()
-                self.GetBEEStatus()
+                if(not self.currentScreen.GetCurrentScreenName() == 'Printing'):
+                    self.GetBEEStatus()
             
             
             
@@ -429,7 +430,7 @@ class BeePanel():
     *************************************************************************"""
     def update(self):
         
-        if(self.BeeState == "SD_Print" or self.BeeState == "Transfer"):
+        if(self.BeeState == "SD_Print" or self.BeeState == "Transfer" or self.currentScreen.GetCurrentScreenName() == 'Printing'):
             pass
         else:
             #set left buttons visible
@@ -455,7 +456,7 @@ class BeePanel():
         #clear whole screen
         self.screen.fill(self.BEEDisplay.GetbgColor())
         
-        if(self.BeeState == "SD_Print" or self.BeeState == "Transfer"):
+        if(self.BeeState == "SD_Print" or self.BeeState == "Transfer" or self.currentScreen.GetCurrentScreenName() == 'Printing'):
             pass
         else:
             #draw split line
