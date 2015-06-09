@@ -5,6 +5,18 @@ See the GNU General Public License for more details. You should have received a 
 
 ## Changelog ##
 
+## v1.0.0 ##
+
+*Printer Info screen is now updated with:
+    * Printer Model Name
+*WiFi config wifi.conf file in USB disk
+*New Images
+*New Display size and resolution
+*Updated BEECODE List
+*Shutdown Button in Settings
+*Over-The-Air Updates
+*Bug Fixes
+
 ## v0.2  ##
 
 Printer Info screen is now updated with:
@@ -21,22 +33,18 @@ Printer Info screen is now updated with:
 * Print finish notification screen
 * Images for movement and mantainance actions
 
-## BeePanel Beta ##
+## BEEConnect 1.0.0 ##
 
-Beepanel creates a small interface to control you BeeTheFirst 3D Printer. <br/>
-BeePanel grants you access to mantainance operations directly on the touch screen. <br/>
-BeePanel allows you to run custom gcodes on your BTF Printer, using USB Mass storage devices to transfer the code directly to the pritner. <br/>
+BEEConnect creates a small interface to control you BeeTheFirst 3D Printer. <br/>
+BEEConnect grants you access to mantainance operations directly on the touch screen. <br/>
+BEEConnect allows you to run custom gcodes on your BTF Printer, using USB Mass storage devices to transfer the code directly to the pritner. <br/>
 
-https://github.com/beeverycreative/BeePanel
+https://github.com/beeverycreative/beeconnect
 
 
 ## Working on ##
 
-* Printing menu bug when touch image
-* Pause
-* Shutdown
-* Wifi Configuration
-* Wireless File transfer
+* New Features
 
 
 ## Setup ##
@@ -44,21 +52,21 @@ https://github.com/beeverycreative/BeePanel
 ### Requirements ###
 
 * Raspberry Pi running Raspbian
-* LCD Touch Dispaly with STMPE610 + ILI9341 controllers (e.g. Adafruit PiTFT (http://adafru.it/1601))
+* LCD Touch Dispaly with XPT2046 + ILI9341 controllers
 * Python 3.4
 * PyGame
 
 
 
 ### Reccommended Install ###
-We recommend you to install BeePanel by burning the Available Image into a SD card. <br/>
+We recommend you to install BEEConnect by burning the Available Image into a SD card. <br/>
 To burn the image follow these steps: <br/>
 
 *   Download the .img file. <br/>
-*   Insert a 4GB+ SD card in your SD card reader. <br/>
+*   Insert a 8GB+ SD card in your SD card reader. <br/>
 *   Follow instructions on how to burn the .img. (http://www.raspberrypi.org/documentation/installation/installing-images/) <br/>
 
-However if you wish to install it on an existing raspbian image read section "Installing BeePanel in an existing Raspbian Image" and follow the instructions. <br/>
+However if you wish to install it on an existing raspbian image read section "Installing BEEConnect in an existing Raspbian Image" and follow the instructions. <br/>
 
 ## Update ##
 
@@ -70,12 +78,12 @@ To update, open a ssh session with using the username "pi" and the default passw
 In the ssh session console type:
 
         cd
-        cd BeePanel
+        cd beeconnect
         sudo git pull
         sudo python3 setup.py install
         
         
-## Installing BeePanel in an existing Raspbian Image ##
+## Installing BEEConnect in an existing Raspbian Image ##
 
 ### Install Bonjour/Zeroconf ###
 
@@ -117,11 +125,11 @@ When asked if you want show console on the screen type "n" and press enter. Same
         cd git/pyusb
         sudo python3 setup.py install
         
-### BeePanel ###
+### BEEConnect ###
 
         cd
-        git clone https://github.com/beeverycreative/BeePanel.git
-        cd BeePanel/
+        git clone https://github.com/beeverycreative/beeconnect.git
+        cd beeconnect/
         sudo python3 setup.py install
         
 ### Python Modules ###

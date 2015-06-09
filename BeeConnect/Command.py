@@ -281,10 +281,20 @@ class Cmd():
         
         if x is not None:
             newX = newX + x
+            if(newX < -96):
+                newX = -96
+            elif(newX > 190):
+                newX = 190
         if y is not None:
             newY = newY + y
+            if(newY < -74.5):
+                newY = -74.5
+            elif(newY > 135):
+                newY = 135
         if z is not None:
             newZ = newZ + z
+            if(newZ > 125):
+                newZ = 125
         if e is not None:
             newE = newE + e
             
