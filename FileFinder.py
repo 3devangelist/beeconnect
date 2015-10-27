@@ -80,7 +80,7 @@ class FileFinder():
         
         """
         
-        path = self.homePath + "/beeconnect" + relPath
+        path = str(self.homePath + "/beeconnect" + relPath)
         
         return path
     
