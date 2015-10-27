@@ -42,7 +42,7 @@ if(pMachine == 'armv6l'):       #assume we're using a raspberri pi
     homeDir = "/home/pi"
 
 
-installationDir = homeDir + "/BeeConnect"
+installationDir = homeDir + "/BeePanel"
 sourceDir = os.getcwd()
 installationJsonDir = installationDir + "/Json"
 installationLoadersDir = installationDir + "/Loaders"
