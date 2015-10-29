@@ -15,7 +15,7 @@
 __author__ = "Marcos Gomes"
 __license__ = "MIT"
 
-from BeeConnect import *
+
 import os
 import pygame
 import FileFinder

@@ -3,7 +3,7 @@
         {
             "Labels":[
                 {
-                    "Text":"Ups... where's the BEE?",
+                    "Text":"Ooooops... where's the BEE?",
                     "X":"0.03125",
                     "Y":"0.04",
                     "FontType":"Regular",
@@ -11,7 +11,7 @@
                     "FontColor":"0,0,0"
                 },
                 {
-                    "Text":"...please connect your BTF pritner",
+                    "Text":"...please connect your BEE printer",
                     "X":"0.375",
                     "Y":"0.92",
                     "FontType":"Regular",

@@ -20,13 +20,13 @@ from time import time
 from Loaders import *
 import FileFinder
 import pygame
-from BeeConnect import *
 
 class FilamentChangeScreen():
     
     """
     BEEConnect vars
     """
+    beeCon = None
     beeCmd = None
     
     ff = None
@@ -42,7 +42,7 @@ class FilamentChangeScreen():
     
     image = None                #image object for heating screen
     
-    targetTemperature = 220     
+    targetTemperature = 210
     nozzleTemperature = 0
     pullInterval = 5         #pull interval for simulation mode
     nextPullTime = None
@@ -78,11 +78,16 @@ class FilamentChangeScreen():
     
     Inits current screen components
     *************************************************************************"""
-    def __init__(self, screen, interfaceLoader, cmd):
+    def __init__(self, screen, interfaceLoader, con):
         
         print("Loading Filament Change Screen Components")
         
-        self.beeCmd = cmd
+        if(con is None):
+            self.beeCmd = None
+            self.beeCon = None
+        else:
+            self.beeCon = con
+            self.beeCmd = self.beeCon.getCommandIntf()
         
         self.firstNextReady = False
         
@@ -113,20 +118,18 @@ class FilamentChangeScreen():
         self.colorList = self.colorCodes.GetColorList()
         
         #Get Nozzle Temeprature
-        self.nozzleTemperature = self.beeCmd.GetNozzleTemperature()
+        self.nozzleTemperature = self.beeCmd.getNozzleTemperature()
         print("Current Nozzle Temperature: ", self.nozzleTemperature)
         
         #Heat Nozzle
-        self.beeCmd.SetNozzleTemperature(self.targetTemperature)
+        #self.beeCmd.setNozzleTemperature(self.targetTemperature)
         
         #Go to Heat Position
         self.ShowMovingScreen()
-        self.beeCmd.homeZ()
-        self.beeCmd.homeXY()
-        self.beeCmd.GoToHeatPos()
+        self.beeCmd.startHeating(self.targetTemperature)
         
         #Get current color code
-        self.selectedColorCode = self.beeCmd.GetBeeCode()
+        self.selectedColorCode = self.beeCmd.getFilamentString()
         print("Current Color Code: ", self.selectedColorCode)
         self.selectedColorName = self.colorCodes.GetColorName(self.selectedColorCode)
         print("Current Color Name: ", self.selectedColorName)
@@ -156,14 +159,14 @@ class FilamentChangeScreen():
                         if self.interfaceState == 0:
                             self.interfaceState = 1
                             self.ShowMovingScreen()
-                            self.beeCmd.GoToRestPos()
+                            self.beeCmd.goToLoadUnloadPos()
                         elif self.interfaceState == 2:
                             self.interfaceState = 1
                             #Get selected list index
                             self.selectedColoridx = (2+self.listPosition) % len(self.colorList)
                             #Get selected color code
                             self.selectedColorCode = self.colorCodeList[self.selectedColoridx]
-                            self.beeCmd.SetBeeCode(self.selectedColorCode)
+                            self.beeCmd.setFilamentString(self.selectedColorCode)
                             #Get selected color name
                             self.selectedColorName = self.colorCodes.GetColorName(self.selectedColorCode)
                             print("Selected Filament Code: ", self.selectedColorCode)
@@ -179,11 +182,11 @@ class FilamentChangeScreen():
                     elif btnName == "Load":
                         print("Load Filament")
                         self.ShowLoadScreen()
-                        self.beeCmd.Load()
+                        self.beeCmd.load()
                     elif btnName == "Unload":
                         print("Unload Filament")
                         self.ShowUnloadScreen()
-                        self.beeCmd.Unload()
+                        self.beeCmd.unload()
                         self.selectedColorName = "Unknown"
                     elif btnName == "Up":
                         self.listPosition = self.listPosition - 1
@@ -312,7 +315,7 @@ class FilamentChangeScreen():
     def KillAll(self):
         
         #CANCEL HEATING
-        self.beeCmd.SetNozzleTemperature(0)
+        self.beeCmd.setNozzleTemperature(0)
         
         self.interfaceState = None
     
@@ -369,7 +372,7 @@ class FilamentChangeScreen():
         t = time()
         if t > self.nextPullTime:
             
-            self.nozzleTemperature = self.beeCmd.GetNozzleTemperature()
+            self.nozzleTemperature = self.beeCmd.getNozzleTemperature()
             
             if self.nozzleTemperature >= self.targetTemperature:
                 self.nozzleTemperature = self.targetTemperature

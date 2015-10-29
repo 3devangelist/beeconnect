@@ -11,6 +11,7 @@
 * should have received a copy of the GNU General Public License along with
 * BEESOFT. If not, see <http://www.gnu.org/licenses/>.
 """
+#from matplotlib.mathtext import TruetypeFonts
 
 __author__ = "Marcos Gomes"
 __license__ = "MIT"
@@ -107,13 +108,7 @@ class FileBrowserScreen():
     """
     TRANSFER GCODE VARS
     """
-    fileSize = 0
-    blocksTransfered = 0
-    nBlocks = 0
-    blockSize = 0
-    totalBytes = 0
-    startTime = 0
-    gcodeFile = None
+    transferPercent = 0
     
     """
     HEATING INTERFACE VALS
@@ -129,18 +124,19 @@ class FileBrowserScreen():
     
     Inits current screen components
     *************************************************************************"""
-    def __init__(self, screen, interfaceLoader, cmd):
+    def __init__(self, screen, interfaceLoader, con):
         """
         .
         """
         print("Loading File Browser Screen Components")
         
-        if(cmd is None):
+        if(con is None):
             self.beeCmd = None
             self.beeCon = None
         else:
-            self.beeCmd = cmd
-            self.beeCon = self.beeCmd.beeCon
+            self.beeCon = con
+            self.beeCmd = self.beeCon.getCommandIntf()
+
         
         self.screen = screen
         self.interfaceLoader = interfaceLoader
@@ -198,7 +194,7 @@ class FileBrowserScreen():
         self.heatImgX = self.interfaceLoader.GetHeatImgX()
         self.heatImgY = self.interfaceLoader.GetHeatImgY()
         
-        self.nozzleTemperature = self.beeCmd.GetNozzleTemperature()
+        self.nozzleTemperature = self.beeCmd.getNozzleTemperature()
         
         #CLEAR EXISTING EVENTS
         retVal = pygame.event.get()
@@ -258,8 +254,6 @@ class FileBrowserScreen():
                             self.CancelTransfer()
                         elif(self.interfaceState == 2):
                             self.CancelHeating()
-                        if(self.gcodeFile is not None):
-                            self.gcodeFile.close()
                         buttonEvent = True
                         break
                     
@@ -461,9 +455,10 @@ class FileBrowserScreen():
             self.screen.blit(self.transfImg,(self.transfImgX,self.transfImgY))
             # Draw Progress Bar
             self.progressBar.DrawRect(self.screen)
-            
-            self.screen.blit(self.progressBar.GetSurface(self.blocksTransfered,self.nBlocks),
-                                self.progressBar.GetPos())
+
+            pSurf = self.progressBar.GetSurface(self.transferPercent,int(100))
+            pPos = self.progressBar.GetPos()
+            self.screen.blit(pSurf,pPos)
             """        
                 HEATING INTERFACE
 
@@ -518,7 +513,7 @@ class FileBrowserScreen():
             self.draw()
             self.verifyGCode = True
         
-        #TRANSFER FILER
+        #TRANSFER FILE
         elif(idxChange == 0 and self.pickerList['Source'] == 'USB-Folder'):
             
             #GET FILE LIST POSITION
@@ -601,53 +596,20 @@ class FileBrowserScreen():
         if(self.interfaceState == 1):
             
             """
-            TRANSFER WITHOUT LOOP
-            """
-            
-            """
-            startPos = self.totalBytes
-            blockTransfered = False
-            while(blockTransfered == False):
-                blockTransfered = self.beeCmd.sendBlock(startPos,self.gcodeFile)
-                if(blockTransfered is None):
-                    print("Transfer aborted")
-                    return False
-
-            self.totalBytes += self.beeCmd.MESSAGE_SIZE
-            
-            self.blocksTransfered += 1
-            print("   :","Transfered ", str(self.blocksTransfered), "/", str(self.nBlocks), " blocks ", self.totalBytes, "/", self.fileSize, " bytes")
-            
-            if(self.blocksTransfered >= self.nBlocks):
-                #TRANSFERED ENDED
-                self.EndTransfer()
-            """
-            
-            """
             TRANSFER WITH LOOP
             """
-            self.beeCmd.transmisstionErrors = 0
 
-            while(self.blocksTransfered < self.nBlocks):
-                startPos = self.totalBytes
-                endPos = self.totalBytes + self.blockSize
-                
-                bytes2write = endPos - startPos
-                
-                if(self.blocksTransfered == self.nBlocks -1):
-                    endPos = self.fileSize
-                
-                blockTransfered = False
-                while(blockTransfered == False):
-                    blockTransfered = self.beeCmd.sendBlock(startPos,self.gcodeFile)
-                    if(blockTransfered is None):
-                        print("Transfer aborted")
-                        return False
-                    
-                self.totalBytes += bytes2write 
-                self.blocksTransfered += 1
-                print("   :","Transfered ", str(self.blocksTransfered), "/", str(self.nBlocks), " blocks ", self.totalBytes, "/", self.fileSize, " bytes")
-                
+            endLoop = False
+
+            self.nextPullTime = time.time() + 2
+
+            percent = 0
+            while percent is not None:
+                percent = self.beeCmd.getTransferCompletionState()
+                try:
+                    self.transferPercent = int(float(percent))
+                except:
+                    pass
                 #clear whole screen
                 #self.screen.fill(pygame.Color(255,255,255))
                 retVal = pygame.event.get()
@@ -656,28 +618,51 @@ class FileBrowserScreen():
                 self.draw()
                 # update screen
                 pygame.display.update()
-                
-            print("   :","Transfer completed",". Errors Resolved: ", self.beeCmd.transmisstionErrors)
-            self.EndTransfer()
-            
+                time.sleep(1)
+
+            if(not self.beeCmd.isTransferring()):
+                #TRANSFERED ENDED
+                self.EndTransfer()
+                #endLoop = True
+
+                """
+                if(time.time() >= self.nextPullTime):
+                    self.nextPullTime = time.time() + 2
+                    if(not self.beeCmd.isTransferring()):
+                        #TRANSFERED ENDED
+                        self.EndTransfer()
+                        endLoop = True
+
+                    else:
+                        try:
+                            self.transferPercent = int(float(self.beeCmd.getTransferCompletionState()))
+                        except:
+                            self.transferPercent = 0
+
+                        if self.transferPercent is None:
+                            self.transferPercent = 0
+                """
+
         #HEATING
         elif(self.interfaceState == 2 and self.cancelTransfer == False):
             currentTime = time.time()
             if(currentTime > self.nextPullTime):
-                self.nozzleTemperature = self.beeCmd.GetNozzleTemperature()
+                self.nozzleTemperature = self.beeCmd.getNozzleTemperature()
                 #print('Nozzle Temperature: ', self.nozzleTemperature)
                 
                 if(self.nozzleTemperature >= self.targetTemperature):
                     self.nozzleTemperature = self.targetTemperature
                     
                     #self.beeCmd.home()
-                    self.beeCmd.SetNozzleTemperature(self.targetTemperature)
+                    self.beeCmd.setNozzleTemperature(self.targetTemperature)
                     self.ShowMovingScreen()
-                    self.beeCmd.beeCon.sendCmd('M31 A0 L0\n');
-                    self.beeCmd.startSDPrint();
+                    self.beeCmd.startSDPrint(self.sdFileName)
+                    #self.beeCmd.startSDPrint(self.selectedFileName)
                     st = ''
                     while('SD_Print' not in st):
                         st = self.beeCmd.getStatus()
+                        if st is None:
+                            st = ''
                         time.sleep(1)
                     return "Printing"
             
@@ -694,11 +679,16 @@ class FileBrowserScreen():
     def StartTransfer(self):
         
         self.cancelTransfer = False
+        self.transferPercent = 0
         
         #check if file exists
         if(os.path.isfile(self.selectedFilePath) == False):
             print("File does not exist")
             return
+
+        #START PRE-HEAT
+        self.ShowMovingScreen()
+        self.beeCmd.startHeating(self.targetTemperature+5)
         
         #Show Loading Screen
         self.ShowLoadingScreen()
@@ -720,74 +710,13 @@ class FileBrowserScreen():
             nameChars[0] = 'a'
             self.sdFileName = "".join(nameChars)
         
-        #ADD ESTIMATOR HEADER
-        #gc = estimator.gcoder.GCode(open(self.selectedFilePath,'rU'))
-        
-        #est = gc.estimate_duration()
-        #eCmd = 'M300\n'                 #Beep
-        #eCmd += 'M206 X500\n'           #Set Acceleration
-        #eCmd += 'M107\n'              #Turn blower off
-        #eCmd += 'M109 S220\n'           #Set Temperature and wait
-        #eCmd += 'G92 E\n'               #Zero Extruder
-        #print('#TODO - Handle Filament Coef')       
-        #eCmd += 'M642 W1\n'               #Set filament coeff
-        #eCmd += 'M130 T6 U1.3 V80\n'          #Set PID Settings
-        #eCmd += 'G1 X-98.0 Y-20.0 Z5.0 F3000\n'   #Nozzle Cleaning
-        #eCmd += 'G1 Y-68.0 Z0.3\n'
-        #eCmd += 'G1 X-98.0 Y0.0 F500 E20\n'
-        #eCmd += 'G92 E\n'               #Zero Extruder
-        #eCmd += 'M31 A' + str(est['seconds']//60) + ' L' + str(est['lines']) + '\n' #Estimator command
-        #eCmd += 'M32 A0\n'      #Clear time counter
-        #eCmd += 'M104 S220\n'       #Define Temperature
-        
-        #newFile = open('gFile.gcode','w')
-        #newFile.write(eCmd)
-        #newFile.close()
-        
-        #eCmd = 'M300\n'
-        #eCmd += 'M104 S0\n'
-        #eCmd += 'G28 Z\n'
-        #eCmd += 'G28 X\n'
-        #eCmd += 'G1 Y65\n'
-        #eCmd += 'G92 E\n'
-        
-        #footer = open('footer.gcode', 'w')
-        #footer.write(eCmd)
-        #footer.close()
-        
-        #subprocess.call(['cat','header.txt', self.selectedFilePath,'>>','gFile.gcode'])
-        #os.system("cat '" + self.selectedFilePath + "' footer.gcode >> " + "gFile.gcode")
-        
-        #self.selectedFilePath = 'gFile.gcode'
-        
-        #Load File
-        print("   :","Loading File")
-        self.fileSize = os.path.getsize(self.selectedFilePath)
-        print("   :","File Size: ", self.fileSize, "bytes")
-        
-        self.blockSize = self.beeCmd.MESSAGE_SIZE * self.beeCmd.BLOCK_SIZE
-        self.nBlocks = math.ceil(self.fileSize/self.blockSize)
-        print("   :","Number of Blocks: ", self.nBlocks)
-        
-        #CREATE SD FILE
-        resp = self.beeCmd.CraeteFile(self.sdFileName)
-        if(not resp):
-            self.interfaceState = 0
-            self.LoadInterfaceComponents()
-            return
-        
         #Start transfer
         self.blocksTransfered = 0
-        self.totalBytes = 0
         
-        self.startTime = time.time()
-        
-        self.gcodeFile = open(self.selectedFilePath, 'rb')
-        
-        self.beeCmd.transmisstionErrors = 0
-        #START PRE-HEAT
-        self.beeCmd.SetNozzleTemperature(self.targetTemperature)
-        
+        self.beeCmd.transferSDFile(self.selectedFilePath,self.sdFileName)
+
+        self.nextPullTime = time.time() + 5
+
         return
     
     """*************************************************************************
@@ -807,9 +736,12 @@ class FileBrowserScreen():
         
         self.ShowLoadingScreen()
         #CANCEL HEATING
-        self.beeCmd.SetNozzleTemperature(0)
+        self.beeCmd.cancelTransfer()
+        self.beeCmd.setNozzleTemperature(0)
+        self.beeCmd.home()
         
-        
+        self.transferPercent = 0
+
         return
     """*************************************************************************
                                 EndTransfer Method 
@@ -817,21 +749,11 @@ class FileBrowserScreen():
     Ends Transfer and starts Heating
     *************************************************************************"""
     def EndTransfer(self):
-        
-        elapsedTime = time.time()- self.startTime
-        avgSpeed = self.fileSize//elapsedTime
-        print("Elapsed time: ",elapsedTime)
-        print("Average Transfer Speed: ", avgSpeed)
-        
-        #OPEN SD FILE
-        resp = self.beeCmd.OpenFile(self.sdFileName)
-        if(not resp):
-            return
-        
+
         if(self.cancelTransfer == False):
             print("Heating")
             #Heat Nozzle
-            self.beeCmd.SetNozzleTemperature(self.targetTemperature)
+            self.beeCmd.setNozzleTemperature(self.targetTemperature)
             self.interfaceState = 2
             
         self.LoadInterfaceComponents()
@@ -846,7 +768,9 @@ class FileBrowserScreen():
     *************************************************************************"""
     def CancelHeating(self):
         
-        self.beeCmd.SetNozzleTemperature(0)
+        self.beeCmd.setNozzleTemperature(0)
+        self.ShowMovingScreen()
+        self.beeCmd.home()
         self.interfaceState = 0
         self.LoadInterfaceComponents()
         
@@ -870,8 +794,9 @@ class FileBrowserScreen():
         
         #PRINT FILE FROM BTF MEMORY
         if(self.selectedRoot =="BTF"):
-            self.beeCmd.OpenFile(self.selectedFileName)
-            self.beeCmd.SetNozzleTemperature(self.targetTemperature)
+            #self.beeCmd.OpenFile(self.selectedFileName)
+            #self.beeCmd.setNozzleTemperature(self.targetTemperature)
+            self.beeCmd.startHeating(self.targetTemperature+5)
             self.interfaceState = 2
             self.LoadInterfaceComponents()
         else:

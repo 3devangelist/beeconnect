@@ -108,14 +108,18 @@ class PrintScreen():
     
     Inits current screen components
     *************************************************************************"""
-    def __init__(self, screen, interfaceLoader, cmd, interfaceState=0):
+    def __init__(self, screen, interfaceLoader, con, interfaceState=0):
         """
         .
         """
         print("loading Print Screen with interface:", interfaceState)
         
-        self.beeCmd = cmd
-        self.beeCon = self.beeCmd.beeCon
+        if(con is None):
+            self.beeCmd = None
+            self.beeCon = None
+        else:
+            self.beeCon = con
+            self.beeCmd = self.beeCon.getCommandIntf()
         
         self.interfaceState = interfaceState  # set interface state
         
@@ -159,7 +163,7 @@ class PrintScreen():
                     if btnName == "Cancel":
                         if(self.interfaceState == 0):
                             self.ShowWaitScreen()
-                            self.beeCmd.cancelSDPrint()
+                            self.beeCmd.cancelPrint()
                             self.ShowMovingScreen()
                             printerReady = False
                             delay = time()
@@ -404,7 +408,7 @@ class PrintScreen():
             if self.interfaceState == 0:
                 
                 try:
-                    pStatus = self.beeCmd.getPrintStatus()
+                    pStatus = self.beeCmd.getPrintVariables()
                     self.elapsedTime = pStatus['Elapsed Time']
                     self.estimatedTime = pStatus['Estimated Time']
                     self.numberLines = pStatus['Lines']
@@ -423,6 +427,8 @@ class PrintScreen():
                     
                     m = int(minutesLeft - (h*60))
                     self.timeRemaining += str(m) + 'm'
+                elif(minutesLeft < 0):
+                    self.timeRemaining = 'Unknown'
                 else:
                     self.timeRemaining = 'Taking longer than expected'
                     

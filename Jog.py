@@ -16,7 +16,6 @@ __author__ = "Marcos Gomes"
 __license__ = "MIT"
 
 import pygame
-from BeeConnect import *
 
 class JogScreen():
     
@@ -35,15 +34,23 @@ class JogScreen():
     
     exitNeedsHoming = False
     exitCallBackResp = None
+
+    beeCon = None
+    beeCmd = None
     
     """*************************************************************************
                                 Init Method 
     
     Inits current screen components
     *************************************************************************"""
-    def __init__(self, screen, interfaceLoader, comm):
-        
-        self.comm = comm
+    def __init__(self, screen, interfaceLoader, con):
+
+        if(con is None):
+            self.beeCmd = None
+            self.beeCon = None
+        else:
+            self.beeCon = con
+            self.beeCmd = self.beeCon.getCommandIntf()
         
         self.screen = screen
         self.interfaceLoader = interfaceLoader
@@ -78,34 +85,34 @@ class JogScreen():
                         self.multiplier = btnName
                     elif btnName == "HomeXY":
                         print("G28 X0 Y0")
-                        self.comm.homeXY()
+                        self.beeCmd.homeXY()
                     elif btnName == "HomeZ":
                         print("G28 Z0")
-                        self.comm.homeZ()
+                        self.beeCmd.homeZ()
                     elif btnName == "X+":
                         val = float(self.multiplier)
                         print("X",val)
-                        self.comm.move(val,None,None,None)
+                        self.beeCmd.move(val,None,None,None)
                     elif btnName == "X-":
                         val = -1 * float(self.multiplier)
                         print("X",val)
-                        self.comm.move(val,None,None,None)
+                        self.beeCmd.move(val,None,None,None)
                     elif btnName == "Y+":
                         val = float(self.multiplier)
                         print("Y",val)
-                        self.comm.move(None,val,None,None)
+                        self.beeCmd.move(None,val,None,None)
                     elif btnName == "Y-":
                         val = -1 * float(self.multiplier)
                         print("Y",val)
-                        self.comm.move(None,val,None,None)
+                        self.beeCmd.move(None,val,None,None)
                     elif btnName == "Z+":
                         val = float(self.multiplier)
                         print("Z",val)
-                        self.comm.move(None,None,val,None)
+                        self.beeCmd.move(None,None,val,None)
                     elif btnName == "Z-":
                         val = -1 * float(self.multiplier)
                         print("Z",val)
-                        self.comm.move(None,None,val,None)
+                        self.beeCmd.move(None,None,val,None)
                         
         
         return

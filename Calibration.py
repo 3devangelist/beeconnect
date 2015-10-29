@@ -14,7 +14,6 @@
 
 
 import pygame
-from BeeConnect import *
 import FileFinder
 
 class CalibrationScreen():
@@ -44,6 +43,7 @@ class CalibrationScreen():
     """
     BEEConnect vars
     """
+    beeCon = None
     beeCmd = None
     
     """*************************************************************************
@@ -51,11 +51,16 @@ class CalibrationScreen():
     
     Inits current screen components
     *************************************************************************"""
-    def __init__(self, screen, interfaceLoader, cmd):
+    def __init__(self, screen, interfaceLoader, con):
         
         print("Loading Calibration Screen Components")
-        
-        self.beeCmd = cmd
+
+        if(con is None):
+            self.beeCmd = None
+            self.beeCon = None
+        else:
+            self.beeCon = con
+            self.beeCmd = self.beeCon.getCommandIntf()
         
         self.screen = screen
         self.interfaceLoader = interfaceLoader
@@ -76,7 +81,7 @@ class CalibrationScreen():
         
         
         self.ShowMovingScreen()
-        self.beeCmd.GoToFirstCalibrationPoint()
+        self.beeCmd.startCalibration()
         pygame.event.get()
         
         return
@@ -109,10 +114,10 @@ class CalibrationScreen():
                             self.buttons = self.interfaceLoader.GetButtonsList(self.calibrationState)
                             if self.calibrationState == 1:
                                 self.ShowMovingScreen()
-                                self.beeCmd.GoToSecondCalibrationPoint()
+                                self.beeCmd.goToNextCalibrationPoint()
                             elif self.calibrationState == 2:
                                 self.ShowMovingScreen()
-                                self.beeCmd.GoToThirdCalibrationPoint()
+                                self.beeCmd.goToNextCalibrationPoint()
                     
                     elif btnName == "+0.5mm":
                         print("Move +0.5mm")
@@ -183,7 +188,7 @@ class CalibrationScreen():
     Frees every element from memmory
     *************************************************************************""" 
     def KillAll(self):
-        
+
         self.calibrationState = None
         self.interfaceLoader = None
         self.lbl = None

@@ -52,21 +52,23 @@ class PrinterInfoScreen():
     BEEConnect vars
     """
     beeCmd = None
+    beeCon = None
     
     """*************************************************************************
                                 Init Method 
     
     Inits current screen components
     *************************************************************************"""
-    def __init__(self, screen, interfaceLoader, comm):
+    def __init__(self, screen, interfaceLoader, con):
         
         self.screen = screen
         self.interfaceLoader = interfaceLoader
         
         self.nextPullTime = time.time()
         self.Pull()
-        
-        self.beeCmd = comm
+
+        self.beeCon = con
+        self.beeCmd = self.beeCon.getCommandIntf()
         
         print("Loading Printer Info Screen Components")
         
@@ -206,14 +208,14 @@ class PrinterInfoScreen():
             
             self.status = self.beeCmd.getStatus()
             
-            fwString = self.beeCmd.GetFirmwareVersion()
+            fwString = self.beeCmd.getFirmwareVersion()
             if('-' in fwString):
                 fwSplits = fwString.split('-')
                 self.fw = fwSplits[len(fwSplits)-1]
             else:
                 self.fw = fwString
             
-            self.printerName = self.beeCmd.beeCon.printerName
+            self.printerName = self.beeCon.getPrinterName()
             self.getIP()
         
         return

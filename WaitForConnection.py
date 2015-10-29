@@ -15,12 +15,11 @@
 __author__ = "Marcos Gomes"
 __license__ = "MIT"
 
-import BeeConnect
 
 import FileFinder
 import pygame
 import Loaders.WaitForConnectionLoader
-from BeeConnect import *
+from beedriver import connection
 import time
 
 class WaitScreen():
@@ -44,7 +43,7 @@ class WaitScreen():
     """
     beeCon = None
     beeCmd = None
-    
+    mode = None
     
     displayWidth = 480
     displayHeight = 320
@@ -54,7 +53,7 @@ class WaitScreen():
     
     intis all compoments
     *************************************************************************"""
-    def __init__(self, screen, dispWidth = 480, dispHeight = 320):
+    def __init__(self, screen, dispWidth = 480, dispHeight = 320, shutdownCallback=None):
         """
         .
         """
@@ -64,7 +63,7 @@ class WaitScreen():
         
         self.connected = False
         
-        print("Printer Connection: ",self.connected)
+        print("Printer Connection: {0}".format(self.connected))
         
         
         self.exit = False
@@ -105,43 +104,42 @@ class WaitScreen():
             t = time.time()
             if t > self.nextPullTime:
                 
-                self.beeCon = BeeConnect.Connection.Con()
+                self.beeCon = connection.Conn(shutdownCallback)
+                # Connect to first Printer
+                self.beeCon.connectToFirstPrinter()
                 if(self.beeCon.isConnected() == True):
-                    self.beeCmd = BeeConnect.Command.Cmd(self.beeCon)
-                    resp = self.beeCmd.startPrinter()
+                    self.beeCmd = self.beeCon.getCommandIntf()
+
+                    self.mode = self.beeCmd.getPrinterMode()
+
+                    #resp = self.beeCmd.startPrinter()
                 
-                    if('Firmware' in resp):
+                    if('Firmware' in self.mode):
                         
                         self.connected = self.beeCon.connected
                         #return True
 
-                    elif('Bootloader' in resp):
+                    elif('Bootloader' in self.mode):
 
                         print("Changing to firmware")
-                        self.beeCon.write("M630\n")
-                        self.beeCon.close()
-                        time.sleep(1)
-                        
-                        self.beeCon = None
-                        #return True
-                    else:
-                        cleaningTries = 5
-                        clean = False
-                        while(cleaningTries > 0 and clean == False):
-                            clean = self.beeCmd.cleanBuffer()
-                            time.sleep(0.5)
-                            self.beeCmd.beeCon.close()
-                            self.beeCmd.beeCon = None
-                            self.beeCmd.beeCon = BeeConnect.Connection.Con()
+                        self.beeCmd.goToFirmware()
+                        #self.beeCon.close()
+                        #time.sleep(1)
 
-                            cleaningTries -= 1
-
-                        if(cleaningTries <= 0 or clean == False):
-                            self.beeCon.close()
+                        self.mode = self.beeCmd.getPrinterMode()
+                        if 'Firmware' not in self.mode:
                             self.beeCon = None
                         else:
-                            self.beeCon = self.beeCmd.beeCon
-                        #return None
+                            self.connected = self.beeCon.connected
+                        #return True
+                    else:
+                        # USB Buffer need cleaning
+                        print('Printer not responding... cleaning buffer\n')
+                        self.beeCmd.cleanBuffer()
+
+                        self.beeCon.close()
+                        self.beeCon = None
+                        # return None
                     
                 self.nextPullTime = time.time() + 0.5
                 #print("Wait for connection")
@@ -150,6 +148,11 @@ class WaitScreen():
         if(tries <= 0):
             print('Printer not found')
             return False
+        else:
+            status = self.beeCmd.getStatus()
+            if status is not None:
+                if 'Shutdown' in status:
+                    self.beeCmd.clearShutdownFlag()
             
             
         return

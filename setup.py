@@ -27,7 +27,8 @@ setup(
       author_email='mgomes@beeverycreative.com',
       license = '',
       url='https://github.com/beeverycreative/beeconnect',
-      packages=['BeeConnect', 'Loaders', 'estimator'],
+      packages=['Loaders', 'estimator'],
+      py_modules=['beedriver.connection', 'beedriver.commands', 'beedriver.transferThread', 'beedriver.printStatusThread']
       )
 
 """
@@ -46,7 +47,7 @@ installationDir = homeDir + "/beeconnect"
 sourceDir = os.getcwd()
 installationJsonDir = installationDir + "/Json"
 installationLoadersDir = installationDir + "/Loaders"
-installationBeeConnectDir = installationDir + "/beeconnect"
+installationBeeConnectDir = installationDir + "/beedriver"
 installatonFontsDir = installationDir + "/Fonts"
 installationImgDir = installationDir + "/Images"
 installationEstimatorDir = installationDir + "/estimator"
@@ -105,7 +106,7 @@ if(not dirMatch):
     srcList = [file for file in os.listdir(sourceDir) if file.endswith('.py')]
     jsonList = [file for file in os.listdir(sourceDir + "/Json") if file.endswith('.json')]
     loadersList = [file for file in os.listdir(sourceDir + "/Loaders") if file.endswith('.py')]
-    beeConList = [file for file in os.listdir(sourceDir + "/BeeConnect") if file.endswith('.py')]
+    beeConList = [file for file in os.listdir(sourceDir + "/beedriver") if file.endswith('.py')]
     fontsList = [file for file in os.listdir(sourceDir + "/Fonts") if file.endswith('.ttf')]
     imgList = [file for file in os.listdir(sourceDir + "/Images")]
     estimatorList = [file for file in os.listdir(sourceDir + "/estimator")]
@@ -125,7 +126,7 @@ if(not dirMatch):
         shutil.copyfile(sourceDir + "/Loaders/" + str(loader), installationLoadersDir + "/" + str(loader))
         
     for con in beeConList:
-        shutil.copyfile(sourceDir + "/BeeConnect/" + str(con), installationBeeConnectDir + "/" + str(con))
+        shutil.copyfile(sourceDir + "/beedriver/" + str(con), installationBeeConnectDir + "/" + str(con))
     
     for font in fontsList:
         shutil.copyfile(sourceDir + "/Fonts/" + str(font), installatonFontsDir + "/" + str(font))

@@ -47,10 +47,10 @@ import PrinterInfo
 import Printing
 import Settings
 
-import BeeConnect.Command
-import BeeConnect.Connection
-
 import Loaders.BeePanelJsonLoader as BeePanelJsonLoader
+
+import beedriver.connection
+import beedriver.commands
 
 os.environ["SDL_FBDEV"] = "/dev/fb1"
 os.environ["SDL_MOUSEDEV"] = "/dev/input/event0"
@@ -167,10 +167,9 @@ class BeePanel():
         """
         self.jsonLoader = BeePanelJsonLoader.jsonLoader()
         
-        print("Using display: ",self.jsonLoader.displayObject.displayType)
-        print("Display Resolution: ", 
-                self.jsonLoader.displayObject.displayWidth, 
-                "x", self.jsonLoader.displayObject.displayHeight)
+        print('Using display: {0}'.format(self.jsonLoader.displayObject.displayType))
+        print('Display Resolution: {0} x {1}'.format(
+                self.jsonLoader.displayObject.displayWidth, self.jsonLoader.displayObject.displayHeight))
         
         self.BEEDisplay = self.jsonLoader.displayObject
         
@@ -201,7 +200,7 @@ class BeePanel():
         """
         print("Drawing Interfaces")
         pygame.init()
-        pygame.mouse.set_visible(False)
+        pygame.mouse.set_visible(True)
         
         self.screen = self.BEEDisplay.GetBEEScreen()
         self.screen.fill(self.BEEDisplay.GetbgColor())
@@ -213,13 +212,13 @@ class BeePanel():
         """
         
         
-        waitScreen = WaitForConnection.WaitScreen(self.screen)
+        waitScreen = WaitForConnection.WaitScreen(screen=self.screen, shutdownCallback=self._connShutdownHook)
         #If the user closes the windows without a connection
         if not waitScreen.connected:
             self.done = True
             
         self.beeCon = waitScreen.beeCon
-        self.beeCmd = BeeConnect.Command.Cmd(self.beeCon)
+        self.beeCmd = self.beeCon.getCommandIntf()
         
         waitScreen.KillAll()
         waitScreen = None
@@ -241,6 +240,8 @@ class BeePanel():
         """
         
         self.GetBEEStatus()
+        # starts the connection monitor thread
+        self.beeCon.startConnectionMonitor()
         
         """
         Print interface screen
@@ -252,7 +253,7 @@ class BeePanel():
             """
             Init Interfaces Screens
             """
-            self.beeCmd.SetNozzleTemperature(0)
+            self.beeCmd.setNozzleTemperature(0)
             self.ShowWaitScreen()
             self.beeCmd.homeZ()
             self.beeCmd.homeXY()
@@ -292,24 +293,14 @@ class BeePanel():
             #check for gobal actions
             
             if(pullRes is not None):
-                print(pullRes)
                 if(pullRes == "Printing"):
+                    print(pullRes)
                     self.done = True
-                    """
-                    self.restart = True
-                    self.currentScreen.KillAll()
-                    self.currentScreen = None
-                    self.beeCmd = None
-                    self.beeCon.close()
-                    self.beeCon = None
-                    self.done = True
-                    time.sleep(1)
-                    """
                     break
             
             
             # Check for interface CallBack
-            if((self.currentScreen.ExitCallBack() is not None)):
+            if(self.currentScreen.ExitCallBack() is not None):
                 if(self.currentScreen.exitCallBackResp == "Restart"):
                     self.done = True
                     self.currentScreenName = self.jsonLoader.GetDefaultScreen()
@@ -319,25 +310,35 @@ class BeePanel():
                     self.exitApp = True
                     self.done = True
                 break
-            
-            if(time.time() > self.aliveTimer + 2):
-                #self.beeCmd.beeCon.sendCmd(cmd='M639 ECHO',wait = 'ECHO')
-                #resp = self.beeCmd.beeCon.echo()
-                resp = self.beeCmd.beeCon.echo()
-                #print('Alive: ', resp)
-                self.aliveTimer = time.time()
-                if(not self.currentScreen.GetCurrentScreenName() == 'Printing'):
-                    self.GetBEEStatus()
-            
+
+
+            if not self.beeCon.isConnected():
+                self.exitApp = True
+                self.done = True
+
             
             
         #pygame.quit()
             
         
         return
-        
-        
-        
+
+    """*************************************************************************
+                                _connShutdownHook Method
+
+    Retrieves the event vector and sends it to the individual interface methods
+    *************************************************************************"""
+    def _connShutdownHook(self):
+        """
+        Function to be called by the BVC driver to shutdown the connection
+        :return:
+        """
+        if not self.beeCon.isConnected():
+            self.exitApp = True
+            self.done = True
+
+        return
+
     """*************************************************************************
                                 handle_events Method 
     
@@ -409,7 +410,7 @@ class BeePanel():
                 if(self.currentScreen.exitNeedsHoming):
                     #If Filament Change Interface, Don't forget to cancel heating
                     if(self.currentScreenName == "Filament"):
-                        self.beeCmd.SetNozzleTemperature(0)
+                        self.beeCmd.setNozzleTemperature(0)
                         
                     self.ShowWaitScreen()
                     self.beeCmd.homeZ()
@@ -551,8 +552,12 @@ class BeePanel():
     Gets the printer status
     *************************************************************************"""  
     def GetBEEStatus(self):
-        
-        self.BeeState = self.beeCmd.getStatus()
+
+        if not self.beeCon.isConnected():
+            self.exitApp = True
+            self.done = True
+        else:
+            self.BeeState = self.beeCmd.getStatus()
         
         #print("Printer Status: ",self.BeeState)
         
@@ -571,22 +576,22 @@ class BeePanel():
             self.currentScreen = None
             
         if(setScreen == "Print"):
-            self.currentScreen = Printing.PrintScreen(self.screen,self.printingScreenLoader,self.beeCmd, state)
+            self.currentScreen = Printing.PrintScreen(self.screen,self.printingScreenLoader,self.beeCon, state)
         else:
             if setScreen == "PrinterInfo":
-                self.currentScreen = PrinterInfo.PrinterInfoScreen(self.screen,self.printerInfoScreenLoader,self.beeCmd)
+                self.currentScreen = PrinterInfo.PrinterInfoScreen(self.screen,self.printerInfoScreenLoader,self.beeCon)
             elif setScreen == "Jog":
-                self.currentScreen = Jog.JogScreen(self.screen,self.jogLoader,self.beeCmd)
+                self.currentScreen = Jog.JogScreen(self.screen,self.jogLoader,self.beeCon)
             elif setScreen == "Calibration":
-                self.currentScreen = Calibration.CalibrationScreen(self.screen,self.calibrationLoader,self.beeCmd)
+                self.currentScreen = Calibration.CalibrationScreen(self.screen,self.calibrationLoader,self.beeCon)
             elif setScreen == "FilamentChange":
-                self.currentScreen = FilamentChange.FilamentChangeScreen(self.screen,self.filamentChangeLoader,self.beeCmd)
+                self.currentScreen = FilamentChange.FilamentChangeScreen(self.screen,self.filamentChangeLoader,self.beeCon)
             elif setScreen == "Settings":
-                self.currentScreen = Settings.SettingsScreen(self.screen,self.settingsLoader,self.beeCmd)
+                self.currentScreen = Settings.SettingsScreen(self.screen,self.settingsLoader,self.beeCon)
             elif setScreen == "FileBrowser":
-                self.currentScreen = FileBrowser.FileBrowserScreen(self.screen,self.fileBrowserLoader,self.beeCmd)
+                self.currentScreen = FileBrowser.FileBrowserScreen(self.screen,self.fileBrowserLoader,self.beeCon)
             elif setScreen == "About":
-                self.currentScreen = About.AboutScreen(self.screen,self.aboutLoader,self.beeCmd)
+                self.currentScreen = About.AboutScreen(self.screen,self.aboutLoader,self.beeCon)
 
             self.currentScreenName = self.currentScreen.GetCurrentScreenName()
         
