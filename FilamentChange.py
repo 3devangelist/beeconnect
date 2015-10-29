@@ -126,7 +126,7 @@ class FilamentChangeScreen():
         
         #Go to Heat Position
         self.ShowMovingScreen()
-        self.beeCmd.startHeating(self.targetTemperature)
+        self.beeCmd.startHeating(self.targetTemperature + 5)
         
         #Get current color code
         self.selectedColorCode = self.beeCmd.getFilamentString()
