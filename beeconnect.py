@@ -200,7 +200,7 @@ class BeePanel():
         """
         print("Drawing Interfaces")
         pygame.init()
-        pygame.mouse.set_visible(True)
+        pygame.mouse.set_visible(False)
         
         self.screen = self.BEEDisplay.GetBEEScreen()
         self.screen.fill(self.BEEDisplay.GetbgColor())
