@@ -305,6 +305,7 @@ class BeePanel():
                     self.done = True
                     self.currentScreenName = self.jsonLoader.GetDefaultScreen()
                     self.GetBEEStatus()
+                    self.InitLeftMenu()
                     self.UpdateLeftButtons()
                 elif(self.currentScreen.exitCallBackResp == "Exit"):
                     self.exitApp = True

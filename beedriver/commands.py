@@ -1100,7 +1100,7 @@ class BeeCmd:
         with self._commandLock:
             printStatus = {}
 
-            resp = self._beeCon.sendCmd('M32\n')
+            resp = self._beeCon.sendCmd('M32\n','ok')
 
             split = resp.split(' ')
 
