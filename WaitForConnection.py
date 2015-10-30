@@ -21,6 +21,7 @@ import pygame
 import Loaders.WaitForConnectionLoader
 from beedriver import connection
 import time
+import FileFinder
 
 class WaitScreen():
     """
@@ -47,7 +48,8 @@ class WaitScreen():
     
     displayWidth = 480
     displayHeight = 320
-    
+
+
     """*************************************************************************
                                 Init Method 
     
@@ -107,31 +109,81 @@ class WaitScreen():
                 self.beeCon = connection.Conn(shutdownCallback)
                 # Connect to first Printer
                 self.beeCon.connectToFirstPrinter()
+                printerDict = self.beeCon.connectedPrinter
                 if(self.beeCon.isConnected() == True):
                     self.beeCmd = self.beeCon.getCommandIntf()
 
                     self.mode = self.beeCmd.getPrinterMode()
 
+                    fwVersion = self.beeCmd.getFirmwareVersion()
+
                     #resp = self.beeCmd.startPrinter()
                 
                     if('Firmware' in self.mode):
-                        
-                        self.connected = self.beeCon.connected
-                        #return True
 
-                    elif('Bootloader' in self.mode):
-
-                        print("Changing to firmware")
-                        self.beeCmd.goToFirmware()
-                        #self.beeCon.close()
-                        #time.sleep(1)
-
-                        self.mode = self.beeCmd.getPrinterMode()
-                        if 'Firmware' not in self.mode:
+                        if '10.4.7' not in fwVersion and not self.beeCmd.isPrinting():
+                            self.beeCmd.goToBootloader()
+                            self.beeCon.close()
                             self.beeCon = None
                         else:
                             self.connected = self.beeCon.connected
-                        #return True
+
+                    elif('Bootloader' in self.mode):
+
+                        printerVID = printerDict['VendorID']
+                        printerPID = printerDict['ProductID']
+
+                        fwName = ''
+                        fwString = ''
+
+                        if printerVID == '65535' and printerPID == '334':
+                            #Old Bootloader Printer
+                            fwString = 'BEEVC-BEETHEFIRST0-10.4.7'
+                            fwName = '/Firmware/BEEVC-BEETHEFIRST0-Firmware-10.4.7.BIN'
+                        elif printerVID == '10697':
+                            #New Bootloader Printers
+                            if printerPID == '1':
+                                #BEETHEFIRST
+                                fwString = 'BEEVC-BEETHEFIRST-10.4.7'
+                                fwName = '/Firmware/BEEVC-BEETHEFIRST-Firmware-10.4.7.BIN'
+                            elif printerPID == '2':
+                                #BEETHEFIRST+
+                                fwString = 'BEEVC-BEETHEFIRST_PLUS-10.4.7'
+                                fwName = '/Firmware/BEEVC-BEETHEFIRST-PLUS-Firmware-10.4.7.BIN'
+                            elif printerPID == '3':
+                                #BEEME
+                                fwString = 'BEEVC-BEEME-10.4.7'
+                                fwName = '/Firmware/BEEVC-BEEME-Firmware-10.4.7.BIN'
+                            elif printerPID == '4':
+                                #BEEINSCHOOL
+                                fwString = 'BEEVC-BEEINSCHOOL-10.4.7'
+                                fwName = '/Firmware/BEEVC-BEEINSCHOOL-Firmware-10.4.7.BIN'
+                            elif printerPID == '5':
+                                #BEETHEFIRST_PLUS_A
+                                fwString = 'BEEVC-BEETHEFIRST_PLUS_A-10.4.7'
+                                fwName = '/Firmware/BEEVC-BEETHEFIRST-PLUS-A-Firmware-10.4.7.BIN'
+
+                        if '10.4.7' not in fwVersion:
+                            print('Falshing new Firmare')
+                            ff = FileFinder.FileFinder()
+                            fwPath = ff.GetAbsPath(fwName)
+                            self.beeCmd.flashFirmware(fwPath,fwString)
+                            while self.beeCmd.getTransferCompletionState() is not None:
+                                time.sleep(0.5)
+                            self.beeCon.close()
+                            self.beeCon = None
+                        else:
+                            print("Changing to firmware")
+                            self.beeCmd.goToFirmware()
+                            #self.beeCon.close()
+                            #time.sleep(1)
+
+                            self.mode = self.beeCmd.getPrinterMode()
+                            if 'Firmware' not in self.mode:
+                                self.beeCon = None
+                            else:
+                                self.connected = self.beeCon.connected
+                            #return True
                     else:
                         # USB Buffer need cleaning
                         print('Printer not responding... cleaning buffer\n')

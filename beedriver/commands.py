@@ -1154,7 +1154,7 @@ class BeeCmd:
             return None
 
         with self._commandLock:
-            cmd = 'M104 A' + str(fwStr) + '\n'
+            cmd = 'M114 A' + str(fwStr) + '\n'
             self._beeCon.sendCmd(cmd, 'ok')
 
             return
@@ -1305,12 +1305,17 @@ class BeeCmd:
 
         with self._commandLock:
             resp = self._beeCon.sendCmd('M115\n', 'ok')
+
+            resp = resp.replace('ok', '')
             resp = resp.replace(' ', '')
+            resp = resp.replace('\n', '')
+            resp = resp.replace('\r', '')
 
-            split = resp.split('ok')
-            fw = split[0]
+            if 'Q:' in resp:
+                split = resp.split('Q:')
+                resp = split[0]
 
-            return fw
+            return resp
     
     # *************************************************************************
     #                            pausePrint Method

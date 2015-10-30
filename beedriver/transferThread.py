@@ -95,7 +95,8 @@ class FileTransferThread(threading.Thread):
             self.transferFirmwareFile()
 
             # Update Firmware String
-            self.beeCon.sendCmd('M114 A%s' % self.optionalString, 'ok')
+            beeCmd = self.beeCon.getCommandIntf()
+            beeCmd.setFirmwareString(self.optionalString)
             self.transferring = False
         
         elif self.transferType.lower() == 'gcode':
