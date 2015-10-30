@@ -1173,11 +1173,12 @@ class BeeCmd:
             logger.debug('File Transfer Thread active, please wait for transfer thread to end')
             return None
 
+        """
         if ('linux' or 'darwin') in platform.system().lower():
             fileName = fileName.translate(None,''.join("'"))
         elif ('win32' or 'cygwin')  in platform.system().lower():
-            fileName = fileName.translate(None,''.join('"'))
-
+            fileName = fileName.translate(None,''.join('"'))\
+        """
         if os.path.isfile(fileName) is False:
             logger.warning("Flash firmware: File does not exist")
             return
