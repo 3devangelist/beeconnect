@@ -122,7 +122,7 @@ class PrinterInfoScreen():
             elif fieldText == "Printer:":
                 valText = self.printerName
             elif fieldText == "BEECONNECT App:":
-                valText = "v1.1"
+                valText = "v1.2"
             elif fieldText == "Local IP:":
                 valText = self.localIp
             elif fieldText == "Wireless SSID:":

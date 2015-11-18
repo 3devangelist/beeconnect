@@ -138,32 +138,32 @@ class WaitScreen():
 
                         if printerVID == '65535' and printerPID == '334':
                             #Old Bootloader Printer
-                            fwString = 'BEEVC-BEETHEFIRST0-10.4.7'
-                            fwName = '/Firmware/BEEVC-BEETHEFIRST0-Firmware-10.4.7.BIN'
+                            fwString = 'BEEVC-BEETHEFIRST0-10.4.8'
+                            fwName = '/Firmware/BEEVC-BEETHEFIRST0-Firmware-10.4.8.BIN'
                         elif printerVID == '10697':
                             #New Bootloader Printers
                             if printerPID == '1':
                                 #BEETHEFIRST
-                                fwString = 'BEEVC-BEETHEFIRST-10.4.7'
-                                fwName = '/Firmware/BEEVC-BEETHEFIRST-Firmware-10.4.7.BIN'
+                                fwString = 'BEEVC-BEETHEFIRST-10.4.8'
+                                fwName = '/Firmware/BEEVC-BEETHEFIRST-Firmware-10.4.8.BIN'
                             elif printerPID == '2':
                                 #BEETHEFIRST+
-                                fwString = 'BEEVC-BEETHEFIRST_PLUS-10.4.7'
-                                fwName = '/Firmware/BEEVC-BEETHEFIRST-PLUS-Firmware-10.4.7.BIN'
+                                fwString = 'BEEVC-BEETHEFIRST_PLUS-10.4.8'
+                                fwName = '/Firmware/BEEVC-BEETHEFIRST_PLUS-Firmware-10.4.8.BIN'
                             elif printerPID == '3':
                                 #BEEME
-                                fwString = 'BEEVC-BEEME-10.4.7'
-                                fwName = '/Firmware/BEEVC-BEEME-Firmware-10.4.7.BIN'
+                                fwString = 'BEEVC-BEEME-10.4.8'
+                                fwName = '/Firmware/BEEVC-BEEME-Firmware-10.4.8.BIN'
                             elif printerPID == '4':
                                 #BEEINSCHOOL
-                                fwString = 'BEEVC-BEEINSCHOOL-10.4.7'
-                                fwName = '/Firmware/BEEVC-BEEINSCHOOL-Firmware-10.4.7.BIN'
+                                fwString = 'BEEVC-BEEINSCHOOL-10.4.8'
+                                fwName = '/Firmware/BEEVC-BEEINSCHOOL-Firmware-10.4.8.BIN'
                             elif printerPID == '5':
                                 #BEETHEFIRST_PLUS_A
-                                fwString = 'BEEVC-BEETHEFIRST_PLUS_A-10.4.7'
-                                fwName = '/Firmware/BEEVC-BEETHEFIRST-PLUS-A-Firmware-10.4.7.BIN'
+                                fwString = 'BEEVC-BEETHEFIRST_PLUS_A-10.4.8'
+                                fwName = '/Firmware/BEEVC-BEETHEFIRST_PLUS_A-Firmware-10.4.8.BIN'
 
-                        if '10.4.7' not in fwVersion:
+                        if '10.4.8' not in fwVersion:
                             print('Falshing new Firmare')
                             ff = FileFinder.FileFinder()
                             fwPath = ff.GetAbsPath(fwName)
